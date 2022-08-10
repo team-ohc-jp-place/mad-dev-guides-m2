@@ -1,0 +1,30 @@
+runtime:
+  cache_dir: ./.cache/antora
+
+site:
+  title: Modern Application Development Roadshow - Dev Track
+  url: http://localhost:3000
+  start_page: mad-dev-guides-m2::1-introduction.adoc
+content:
+  sources:
+    - url: .
+      branches: HEAD
+      start_path: documentation
+
+asciidoc:
+  attributes:
+    experimental: true
+    page-pagination: true
+    openshift-password: openshift
+  extensions:
+    - ./lib/remote-include-processor.js
+    - ./lib/tab-block.js
+
+ui:
+  bundle:
+    url: https://github.com/danieloh30/course-ui/raw/main/ui-bundle-fix-rexp.zip
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+
+output:
+  dir: ./gh-pages

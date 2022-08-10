@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1. Introduction - 10 minutes :: Modern Application Development Roadshow - Dev Track</title>
+    <link rel="canonical" href="http://localhost:3000/mad-dev-guides-m2/main/1-introduction.html">
+    <link rel="next" href="2-refactor.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () { 
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('USERID');
+      const subDomain = urlParams.get('SUBDOMAIN');
+      const tomcatIP = urlParams.get('TOMCATIP');
+      if (userId) {
+        showUserId( userId );
+      }
+      else {
+        showUserIdForm();
+      }
+    } );
+
+
+    function showUserId( userId ) {
+      document.getElementById('navbar-form-empty').style.display = "none";
+      document.getElementById('navbar-form-filled').style.display = "flex";
+      document.getElementById('username').textContent = userId;
+      document.getElementById('subDomain').value = subDomain;
+      document.getElementById('tomcatIP').value = tomcatIP;
+
+    }
+
+    function showUserIdForm( userId ) {
+      document.getElementById('navbar-form-empty').style.display = "flex";
+      document.getElementById('navbar-form-filled').style.display = "none";
+    }
+
+    function goWithUserId() {
+      elUserIdInput = document.getElementById('userId');
+      elSubDomainInput = document.getElementById('subDomain');
+      elTomcatIPInput = document.getElementById('tomcatIP');
+
+      window.location.search = ('&USERID=' + elUserIdInput.value + '&SUBDOMAIN=' + elSubDomainInput.value + '&TOMCATIP=' + elTomcatIPInput.value);
+    }
+
+  </script>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com/en/products/runtimes" target="_blank"><img
+          src="../../_/img/Logo-Red_Hat-Runtimes-A-Reverse-RGB.png" height="40px" alt="Red Hat Runtimes"></a>
+      <a class="navbar-item" href="http://localhost:3000" style="color: white;"><h3>Modern Application Development Roadshow - Dev Track</h3></a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item" id="navbar-form-empty">
+          <span class="navbar-text" style="margin-left: 1rem;">Your Workshop Environment</span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;"
+              class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+
+          <form action="javascript:void(0);" onsubmit="goWithUserId();">
+            <div class="navbar-item" id="navbar-form-project-filled" style="display: none;">
+              <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+            </div>
+            <input size="40" id="userId" type="text" placeholder="Enter USER ID">
+            <input type="hidden" id="subDomain" name="subDomain" value="">
+            <input type="hidden" id="tomcatIP" name="tomcatIP" value="">
+          </form>
+        </div>
+        
+        <div class="navbar-item" id="navbar-form-filled" style="display: none;">
+          <span class="navbar-text" style="margin-left: 1rem;">Your Workshop Environment</span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+          <span class="navbar-text" id="username"></span>
+          <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+        </div>
+
+    </div>
+  </nav>
+</header><div class="body">
+<div class="nav-container" data-component="mad-dev-guides-m2" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="1-introduction.html" class=" query-params-link">Module 2</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="1-introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="2-refactor.html">Refactor</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="3-deploy-to-kubernetes.html">Deploy to Kubernetes</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Module 2</span>
+    <span class="version">main</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Module 2</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="1-introduction.html">main</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="1-introduction.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="1-introduction.html">Module 2</a></li>
+    <li><a href="1-introduction.html">Introduction</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///Users/danieloh/Downloads/dev-guides/mad-dev-guides-m2/documentation/modules/ROOT/pages/1-introduction.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">1. Introduction - 10 minutes</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Application modernization strategies are often categorized into the <code>6R</code>’s framework that was popularized by Amazon (and prior the 5Rs by Gartner). Here is what they mean.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/mod-strategies.png" alt="Modernization Strategies">
+</div>
+</div>
+<div class="paragraph">
+<p>Red Hat helps our customers' application modernization journey with this approach:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/app-mod-approach.png" alt="Modernization Approach">
+</div>
+</div>
+<div class="paragraph">
+<p>This module will walk you through 2 of the phases (<em>Assess</em>, <em>Rationalize</em>) as following steps:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Assessment and Analysis of the legacy application using <a href="https://www.konveyor.io/tools/tackle/" target="_blank" rel="noopener">Konveyor Tackle</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>We&#8217;ll replace <em>Tackle</em> with <strong>Migration Toolkit for Applications (MTA) 6.x</strong> that will build on <em>Tackle</em> and <em>PathFinder</em> to provide application assessment and analysis features in the future.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_1_understand_the_globex_retail_system_architecture"><a class="anchor" href="#_1_1_understand_the_globex_retail_system_architecture"></a>1.1. Understand the Globex Retail System Architecture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Globex system (workshop environment) has the whole microservices applications that are deployed multiple platforms such as virtual machines and container platform as below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/architecture_initial.png" alt="architecture_initial">
+</div>
+</div>
+<div class="paragraph">
+<p>Your initial state for this workshop is an environment that is spread over Red Hat Virtualization and Red Hat OpenShift Container Platform.</p>
+</div>
+<div class="paragraph">
+<p>Your application has been partially already moved from your legacy environments to OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>The Globex retail system is multiple services consisting of a <em>Node.js</em> frontend service which is getting its data via a gateway service. The gateway service is connected to three backend services such as customers, orders and inventory. Each service uses its own database to store data.</p>
+</div>
+<div class="paragraph">
+<p>The services running on OpenShift are deployed in a namespace <code>retail</code>. The services are eventually managed using the <strong>OpenShift GitOps</strong> and <strong>Pipelines</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You might see the customers pods are failed to run due to <em>ImagePullBackOff Error</em>. It will be fixed when you finish the <strong>Deploy to Kubernetes</strong> section.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>All source code for the applications as well as the GitOps YAML manifests for all services are stored in a (GitHub compatible) <strong>Gitea</strong> repository that for workshop purposes is hosted on the OpenShift cluster.</p>
+</div>
+<div class="paragraph">
+<p>The problem right now is the <strong>customers</strong> service:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The customers service uses an old Java code base running on <code>Apache Tomcat</code> in a VM on <code>Red Hat Virtualization</code>. In the end, you will modernize the Java code and then deploy the application to OpenShift on top of Red Hat JBoss Web Server.</p>
+</li>
+<li>
+<p>The customers database is using an <code>Oracle database</code> running as a VM in Red Hat Virtualization. Because this is Oracle you can not deploy the database as a Pod on OpenShift - therefore you will use a new virtual machine based on <code>OpenShift Virtualization</code> migrated by the <code>OpenShift Migration Toolkit for Virtualization</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When you have finished the all modules in Dev track, your TO-BE deployment architecture should look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/architecture_completed.png" alt="architecture_completed">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_2_workshop_environment"><a class="anchor" href="#_1_2_workshop_environment"></a>1.2. Workshop Environment</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_1_2_1_confirm_your_username"><a class="anchor" href="#_1_2_1_confirm_your_username"></a>1.2.1. Confirm Your Username!</h3>
+<div class="paragraph">
+<p>Look in the box at the top of your screen. Is your username set already? If so it will look like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/alreadyset.png" alt="alreadyset">
+</div>
+</div>
+<div class="paragraph">
+<p>If your <code>username</code> is properly set, then you can move on. <strong>If not, in the above box, enter the user ID you were assigned</strong> like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/setuser.png" alt="setuser">
+</div>
+</div>
+<div class="paragraph">
+<p>This will customize the links and copy/paste code for this workshop. If you accidentally type the wrong username, just update your username in the URL parameters (e.g. <em>1-introduction.html?USERID=%USERID%</em>)</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You have to use <strong>an unique username</strong> (e.g. <code>%USERID%</code>) while you&#8217;re running the hands-on labs. For example, you need to deploy applications to your own project (e.g. retail-%USERID%).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_1_2_2_openshift_cluster"><a class="anchor" href="#_1_2_2_openshift_cluster"></a>1.2.2. OpenShift Cluster</h3>
+<div class="paragraph">
+<p>Your OpenShift cluster is already configured with everything you need. Here are the details:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Gitea</code> to host the source code repositories)</p>
+</li>
+<li>
+<p><code>OpenShift Virtualization</code> to ultimately run the migrated Oracle VM)</p>
+</li>
+<li>
+<p><code>Migration Toolkit for Virtualization</code> to facilitate the migration of the Oracle VM from Red Hat Virtualization to Red Hat OpenShift Container Platform)</p>
+</li>
+<li>
+<p><code>OpenShift GitOps</code> to manage the deployed services using a GitOps approach through ArgoCD</p>
+</li>
+<li>
+<p><code>OpenShift Pipelines</code> to build the customer application from source code and deploy to the <code>retail</code> project using GitOps</p>
+</li>
+<li>
+<p><code>Migration Toolkit for Applications (Tackle)</code> to help modernize the customer service Java source code.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_1_2_3_visual_studio_code_server"><a class="anchor" href="#_1_2_3_visual_studio_code_server"></a>1.2.3. Visual Studio Code Server</h3>
+<div class="paragraph">
+<p>Visual Studio (VS) Code Servers are already deployed in the OpenShift cluster to facilitate an easy demonstration environment. This means you don&#8217;t need to install and configure VS Code on your local environment but you can just use the one provided in a web browser.</p>
+</div>
+<div class="paragraph">
+<p>This makes it easy to change any source code and configuration files in the cloned repository.</p>
+</div>
+<div class="paragraph">
+<p>To get started, access the <a href="https://codeserver-codeserver-%USERID%.apps.%SUBDOMAIN%" target="_blank" rel="noopener">VS Code server instance</a> and log in using the following <code>password</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Password: <code>openshift</code></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/vscode-server-login.png" alt="vscode-server-login">
+</div>
+</div>
+<div class="paragraph">
+<p>The graphical user interface (GUI) should look like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/vscode.png" alt="VSCode">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_3_explore_the_globex_retail_services_gui"><a class="anchor" href="#_1_3_explore_the_globex_retail_services_gui"></a>1.3. Explore the Globex Retail Services (GUI)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can check what the <code>Globex retail service</code> looks like currently by accessing the frontend web application. To find the URL to access the <strong>Frontend</strong> application, you need to use the OpenShift command line tool (<code>oc</code>). Go to the VS Code server and Open a new terminal that already installed the <em>oc</em> command by default.</p>
+</div>
+<div class="paragraph">
+<p>Click on <code>New Terminal</code> in Terminal menu in the VS Code. Once a new terminal is open, run the following <em>oc</em> command.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u %USERID% -p openshift https://openshift.default.svc:443</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/vscode-terminal.png" alt="vscode-terminal">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When you see a popup message, <strong>"See text and images copied to the clipboard"</strong>, click on <code>Allow</code>. Then you might also see <code>"Use insecure connections?"</code> message in the terminal. In case, press <code>y</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Find the <code>Route</code> URL for the <strong>Frontend</strong> application. Run the following <code>oc</code> command in the VS Code server terminal.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route ordersfrontend -n retail-%USERID%</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should look like:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME             HOST/PORT                                                                PATH   SERVICES         PORT   TERMINATION     WILDCARD
+ordersfrontend   ordersfrontend-retail-%USERID%.apps.%SUBDOMAIN%          ordersfrontend   web    edge/Redirect   None</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Navigate to the orders frontend route. You can use either <em>https</em> or <em>http</em> (which will be redirected to <em>https</em>).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/frontend.png" alt="Frontend">
+</div>
+</div>
+<div class="paragraph">
+<p>Click through the three panels on the left.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Customers</code> shows the list of the customer information such as <em>fullname, city, country, and username</em>.</p>
+</li>
+<li>
+<p><code>Orders</code> shows current order information including relevant customer data.</p>
+</li>
+<li>
+<p><code>Products</code> shows the current inventory information.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_4_access_the_customer_data"><a class="anchor" href="#_1_4_access_the_customer_data"></a>1.4. Access the Customer Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The RHV environment not only has the Oracle Database VM deployed but it also hosts another VM which runs the old customer application on top of Apache Tomcat.</p>
+</div>
+<div class="paragraph">
+<p>From a terminal window you can use <code>curl</code> to demonstrate that the application is connected to the database.</p>
+</div>
+<div class="paragraph">
+<p>Use the IP Address of the <strong>Customer Service (Tomcat VM)</strong> to access the customer service. You can run the following <em>curl</em> command in the VS Code server&#8217;s terminal or your local environment since the Tomcat IP address is publicly accessible.</p>
+</div>
+<div class="paragraph">
+<p>Run the following <code>curl</code> commands in the VS Code server terminal.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://%TOMCATIP%:8080/customers-tomcat-0.0.1-SNAPSHOT/customers/1 ; echo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should look like:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{"id":1,"username":"phlegm_master_19","name":"Guybrush","surname":"Threepwood","address":"1060 West Addison","zipCode":"ME-001","city":"Melee Town","country":"Melee Island"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Try to get another customer data.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://%TOMCATIP%:8080/customers-tomcat-0.0.1-SNAPSHOT/customers/2 ; echo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should look like:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{"id":2,"username":"hate_guybrush","name":"Pirate","surname":"Lechuck","address":"Caverns of Meat, no number","zipCode":"MO-666","city":"Giant Monkey Head","country":"Monkey Island"}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="next"><a href="2-refactor.html" class="query-params-link">Refactor</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

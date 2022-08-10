@@ -1,1 +1,0 @@
-# mad-dev-guides-m2
