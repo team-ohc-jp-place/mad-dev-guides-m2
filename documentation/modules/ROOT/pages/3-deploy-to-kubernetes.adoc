@@ -1,4 +1,4 @@
-= 6. Deploy to Kubernetes - 25 minutes
+= 3. Deploy to Kubernetes - 25 minutes
 :imagesdir: ../assets/images
 
 == Goals of this lab
@@ -11,15 +11,15 @@ The goal is that you will build and deploy the modernized customer application t
 * Update the configuration for the *gateway* service to now point to the modernized *customers* service.
 * Demonstrate that your *frontend* service still works as before.
 
-== 6.1. Update Oracle DMBS Connection using Helm
+== 3.1. Update Oracle DMBS Connection using Helm
 
-=== 6.1.1. Why OpenShift with Helm?
+=== 3.1.1. Why OpenShift with Helm?
 
 https://docs.openshift.com/container-platform/4.10/applications/working_with_helm_charts/understanding-helm.html[Helm^] is a package and install manager that standardizes and simplifies packaging and deployment of containerized applications with Kubernetes, anywhere in the hybrid cloud. Helm lets developers package their applications so that they can be easily shared and deployed by anyone in their organization and beyond. 
 
 Helm can also be used to automate *day-1* tasks like installation and basic configuration management for setting up the applications, and some *day-2* operations like performing some simple upgrades and rollbacks.
 
-=== 6.1.2. Update the Helm Chart for a new JDBC configuration
+=== 3.1.2. Update the Helm Chart for a new JDBC configuration
 
 The *customers* application in the OpenShift cluster has currently a connection failure because the application still tries to connect to the Oracle database running on RHV. To fix the issue, you need to update the *JDBC* configuration that points to the migrated Oracle database on OpenShift virtualization.
 
@@ -59,9 +59,9 @@ Once you logged in to the Gitea admin console, you will see the latest commit (e
 
 image::gitea-update-file.png[gitea-update-file]
 
-== 6.2. Run an OpenShift Pipelines
+== 3.2. Run an OpenShift Pipelines
 
-=== 6.2.1 Why OpenShift Pipelines?
+=== 3.2.1 Why OpenShift Pipelines?
 
 OpenShift Pipelines provides a *kubernetes-native CI/CD* framework based on https://tekton.dev[Tekton^] to design and run your pipelines, and is designed to run each step of the CI/CD pipeline in its own container, allowing each step to scale independently to meet the demands of the pipeline.
 
@@ -84,7 +84,7 @@ The pipeline accepts the following parameters:
 * *target-namespace*: Namespace/project in which to deploy the application.
 * *target-registry*: Registry to push the built image to. (_default: image-registry.openshift-image-registry.svc:5000_)
 
-=== 6.2.2 Execute the Customers Pipelines
+=== 3.2.2 Execute the Customers Pipelines
 
 In the future we will have a trigger and event listener on the pipeline. But for now you have to kick off the pipeline run manually.
 
@@ -125,7 +125,7 @@ As soon as you started the *customers-deployment-pipeline* pipeline, a _pipeline
 
 image::ama-pipeline-complete.png[ama-pipeline-complete]
 
-=== 6.2.3 Add Labels for better Topology View
+=== 3.2.3 Add Labels for better Topology View
 
 Globex retail system has deployed multiple microservices to the OpenShift cluster as well as each microservices has complex relations with the other microservices and databases. This architecture might not be understandable quickly and easily for developers and SREs. Luckily, OpenShift developer console provides a decent `topology` view with adding labels and annotations. It makes the topology view more clear and explicit relations among deployed applications in the same namespace.
 
@@ -160,9 +160,9 @@ image::app-topology.png[app-topology]
 
 Now we need to update the `gateway` application's configuration to connect to the `customers` based on Kubernetes service name rather than the *IP address*.
 
-== 6.3. Sync the Gateway application in ArgoCD
+== 3.3. Sync the Gateway application in ArgoCD
 
-=== 6.3.1 Why OpenShift GitOps?
+=== 3.3.1 Why OpenShift GitOps?
 
 `GitOps` in short is a set of practices to use *Git pull requests* to manage infrastructure and application configurations. Git repository in GitOps is considered the only source of truth and contains the entire state of the system so that the trail of changes to the system state are visible and auditable.
 
@@ -174,7 +174,7 @@ Although there is no precise definition or agreed upon set of rules, the followi
 *Changes to the state are made via pull requests
 *Git push reconciled with the state of the running system with the state in the Git repository
 
-=== 6.3.2 Update the Gateway Configuration
+=== 3.3.2 Update the Gateway Configuration
 
 Go back to the VS Code server and open the `application.yaml` file in *gatway/helm/config* directory. Replace *customers' URL* with the following URL.
 
@@ -202,7 +202,7 @@ image::argocd-server-route.png[argocd-server-route]
 
 Then you will see the ArgoCD login page.
 
-=== 6.3.3 Sync the configuration change by ArgoCD
+=== 3.3.3 Sync the configuration change by ArgoCD
 
 Click on `LOG VIA OPENSHIFT` button.
 
@@ -221,7 +221,7 @@ When the code change (e.g. _application.yaml_) completes in _Gitea_ server, Argo
 
 image::argocd-sync.png[argocd-sync]
 
-// === 6.3.4 Delete the Gateway Pod
+// === 3.3.4 Delete the Gateway Pod
 
 Go to the OpenShift admin console to confirm if the `gateway-config` is updated based on the code change.
 
@@ -235,7 +235,7 @@ image::gateway-new-configmap.png[gateway-new-configmap]
 
 // image::delete-gateway-pod-popup.png[delete-gateway-pod-popup]
 
-== 6.4. Revisit the GLOBEX web page
+== 3.4. Revisit the GLOBEX web page
 
 Let's go back to the `Customers` in the *GLOBEX* web page. You can find the frontend URL by running the following `oc` command in terminal on the _VS Code server_.
 

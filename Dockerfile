@@ -1,4 +1,4 @@
-FROM node:latest
+FROM quay.io/openshiftlabs/node:14-alpine-mad
 
 RUN mkdir -p /opt/src
 

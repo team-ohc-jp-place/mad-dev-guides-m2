@@ -1,4 +1,4 @@
-= 4. Refactor - 25 minutes
+= 2. Refactor - 25 minutes
 :imagesdir: ../assets/images
 
 == Goals of this lab
@@ -7,7 +7,7 @@ The goal is to understand the modernization issues of the `customers` applicatio
 
 In this lab you will also analyze the customers application once again using MTA if the all issue are fixed.
 
-== 4.1. Explore the Migration issues
+== 2.1. Explore the Migration issues
 
 According to the analysis report, the migration issues are related to external configurations with hard coded static IP addresses. Let's dig into the issue on the code level. 
 
@@ -19,7 +19,7 @@ The *dataSource()* method creates an `ApplicationConfiguration` instance to conf
 
 image::applicationConfiguration-class.png[applicationConfiguration-class]
 
-== 4.2. Understand the Solution
+== 2.2. Understand the Solution
 
 The `customers-tomcat-ocp` project implements the *Customers* application with all the required changes and deploy the applications to OpenShift (Kubernetes). It also defines an OpenShift manifests file in the `ocp` directory.
 
