@@ -66,8 +66,19 @@ Here's the list of all query params used (they are all optional, but generated l
 
 Example [Dev Mode]:
 
-http://localhost:3000/mad-dev-guides-m2/main/1-introduction.html?USERID=user1&SUBDOMAIN=cluster-8s5ss.sandbox701.opentlc.com&tomcatIP=150.240.99.53
+http://localhost:3000/mad-dev-guides-m2/main/1-introduction.html?USERID=user1&SUBDOMAIN=cluster-8s5ss.sandbox701.opentlc.com
 
+## Deploy to OpenShift
+
+[.console-input]
+[source,bash]
+----
+oc new-app  https://github.com/RedHat-Middleware-Workshops/mad-dev-guides-m2.git --strategy=docker
+
+oc expose deploy mad-dev-guides-m2 --port 3000
+
+oc create route edge mad-dev-guides-m2 --service=mad-dev-guides-m2
+----
 
 ## Contributing
 

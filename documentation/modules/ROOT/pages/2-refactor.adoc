@@ -3,15 +3,17 @@
 
 == Goals of this lab
 
-The goal is to understand the modernization issues of the `customers` application and learn how you can fix them by the code modification. The MTA report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
+The goal is to understand the modernization issues of the `customers` application and learn how you can fix them by the code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
 
-In this lab you will also analyze the customers application once again using MTA if the all issue are fixed.
+In this lab you will also analyze the customers application once again using Tackle Analysis when the all issue are fixed.
 
 == 2.1. Explore the Migration issues
 
-According to the analysis report, the migration issues are related to external configurations with hard coded static IP addresses. Let's dig into the issue on the code level. 
+According to the analysis report, the migration issues are related to external configurations with *hard coded static IP addresses*. 
 
-Go to the web browser that opens the VS Code server. Explore the `customers-tomcat-legacy` project to open `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory.
+image::static-ip-issue.png[static-ip-issue]
+
+Let's dig into the issue on the code level. Go to the web browser that opens the VS Code server. Explore the `customers-tomcat-legacy` project to open `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory.
 
 image::persistence-class.png[persistence-class]
 
@@ -19,42 +21,273 @@ The *dataSource()* method creates an `ApplicationConfiguration` instance to conf
 
 image::applicationConfiguration-class.png[applicationConfiguration-class]
 
-== 2.2. Understand the Solution
+== 2.2. Fix the External Configuration issues
 
-The `customers-tomcat-ocp` project implements the *Customers* application with all the required changes and deploy the applications to OpenShift (Kubernetes). It also defines an OpenShift manifests file in the `ocp` directory.
+The legacy ApplicationConfiguration class is being used in this application. This is discouraged by the migration guidelines, and should be replaced by a more standard approach using Spring's `@PropertySource` annotation and Environment class. 
 
-image::ocp-manifests.png[ocp-manifests]
+=== 2.2.1. Add Spring PropertySource annotation
 
-Let's find out how to fix the above configuration issue. Move to `customers-tomcat-ocp` project. Then, open `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory and `pom.xml` file.
+Add the following annotation on top of `PersistenceConfig` public class.
 
-*ApplicationConfiguration* class isn't required anymore to configure the JDBC variables but the *datasource* method still needs to use the environment instance. When you take a look at the *pom.xml*, the static properties file will be excluded when the application is building. 
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+@PropertySource("classpath:persistence.properties")
+----
 
-image::appconfig-pom-ocp.png[appconfig-pom-ocp]
+=== 2.2.2. Update DataSource method
 
-Using the kubernetes profile in the build is essential for the application to pick up the configuration file injected via a secret in the pod. That secret also has to be  created manually which would normally be done by packaging with maven. To generate these _Kubernetes_ resources, you usually run the following maven command with the _Kubernetes_ profile.
+Then, inject an `Environment` class using the `Spring Autowired` annotation to refer to local application configurations. Add the following code to the _PersistenceConfig_ class.
+
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+    @Autowired
+    private Environment env;
+----
+
+Replace the `dataSource()` method with the following code to get JDBC configurations by the _Environment_ injection.
+
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+    @Bean
+    public DataSource dataSource() {
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.user"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
+
+        return dataSource;
+    }
+----
+
+The `PersistenceConfig` class should look like this.
+
+image::datasource-modification.png[datasource-modification]
+
+=== 2.2.3. Update additionalProperties method
+
+You also need to remove the *ApplicationConfiguration* reference in the `additionalProperties()` method. Replace existing _additionalProperties_ method logic with the following code.
+
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+    final Properties additionalProperties() {
+        final Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");
+
+        return hibernateProperties;
+    }
+----
+
+=== 2.2.4. Update Packages
+
+Remove unnecessary packages (e.g. _ApplicationConfiguration_) and add new packages for DI injection and PropertySource. 
+
+Replace the `import package` lines with the following code.
+
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+import java.util.Properties;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+----
+
+=== 2.2.5. Remove Corporate libraries
+
+Now, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment a dependency in your Maven project.
+
+Open the `pom.xml` and comment the following `config-utils` dependency.
+
+[.console-input]
+[source,xml,subs="+attributes,macros+"]
+----
+		<!-- Corporate libraries -->
+		<!-- <dependency>
+			<groupId>io.konveyor.demo</groupId>
+			<artifactId>config-utils</artifactId>
+			<version>1.0.0</version>
+		</dependency> -->
+----
+
+image::comment-dep.png[comment-dep]
+
+=== 2.2.6. Update application.properties
+
+In the meantime, the Globex retails system's *SRE team* has already migrated the `Oracle database` running from the virtual machine on `Red Hat Virtualization` to `OpenShift Virtualization` based on KubeVirt.
+
+[TIP]
+====
+The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^], an add-on to OpenShift Container Platform With OpenShift Virtualization, you can run and manage virtual machine workloads alongside container workloads.
+====
+
+Access link:https://console-openshift-console.apps.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+
+* Username: `%USERID%`
+* Password: `openshift`
+
+image::retail-topology.png[comment-dep]
+ 
+Open the `application.properties` in *src/main/resources/persistence.properties* to access the *customers* data in the new *oracle-database* virtual machine on OpenShift. Open 
+
+Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
+
+[.console-input]
+[source,properties,subs="+attributes,macros+"]
+----
+jdbc.url=jdbc:oracle:thin:@oracle-database.retail-%USERID%.svc.cluster.local:1521/XEPDB1
+jdbc.user=customer
+jdbc.password=redhat
+----
+
+image::update-app-props.png[update-app-props]
+
+=== 2.2.7. Test the build
+
+Go to the `Terminal` window in VS Code server. Then, build and package the customers application again:
+
+[.console-input]
+[source,sh,subs="+attributes,macros+"]
+----
+cd $HOME/app-mod-projects/customers-tomcat-legacy/ &&
+mvn clean package
+----
+
+The output should end up with `BUILD SUCCESS`.
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+....
+[INFO] --- maven-war-plugin:3.3.1:war (default-war) @ customers-tomcat ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [customers-tomcat] in [/home/codeserver/app-mod-projects/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT]
+[INFO] Processing war project
+[INFO] Building war: /home/codeserver/app-mod-projects/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT.war
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.048 s
+[INFO] Finished at: 2022-08-12T21:48:47Z
+[INFO] ------------------------------------------------------------------------
+----
+
+=== 2.2.8. Re-run Tackle Analysis
+
+Let's go back to the link:https://tackle-tackle-%USERID%.apps.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze th modernized application (*customers*). 
+
+Click on `Create new`.
+
+image::tackle-new-analysis.png[tackle-new-analysis]
+
+Fill in the following fields, and click `Create`:
+
+* Name: `New Customers`
+* Description: `Modernized Customers management service`
+* Business service: `Retail`
+* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
+
+image::tackle-new-app.png[tackle-new-app]
+
+Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
+
+image::tackle-search-new-customers.png[tackle-search-new-customers]
 
 [NOTE]
 ====
-You don't need to run the following maven command today since you already have the solution artifact (`customers-tomcat-solution.war`) that are packaged with the fixed code by using the Kubernetes profile.
+You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.apps.%SUBDOMAIN%/%USERID%/app-mod-projects[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
+
+image::gitea-repo.png[gitea-repo]
+
+You can also log in to the Gitea repository with the following credentials.
+
+* Username - `%USERID%`
+* Password - `openshift`
 ====
 
-[source,sh]
-----
-mvn clean package -P kubernetes
-----
+Once you download or clone the project to your local file system, explore if the `customers-tomcat-solution.war` file exists in the *packages-mta* folder.
 
-Let's go back to the MTA web console. Then, create a new project to analyze the solution artifact. 
+Select `Upload local binary` in Analysis mode popup. Then, drag and drop the *customers-tomcat-solution.war* file or Upload it from your local file system.
 
-* Project name: `New Customers Service`
+image::add-new-applications.png[Add new applications]
 
-Select the `customers-tomcat-solution.war` file from your local file system in the *Add applications* page.
+Click on `Next`.
+
+[NOTE]
+====
+Please make sure to see following success popup message on the right top. It probably will take a few seconds to complete uploading the binary file. 
+
+image::upload-success.png[upload-success]
+====
+
+You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as same targets of the legacy application.
+
+image::configure-analysis-checked.png[Configure Analysis]
+
+Click on `Next`.
+
+Select `Application and internal dependencies only` for the scope of dependencies.
+
+image::packages.png[Select packages]
+
+Click on `Next`.
+
+You will now be presented with options for custom rules.
+
+image::custom-rules.png[Custom rules]
+
+Click on `Add Rule` to upload a custom rule (`corporate-framework-config.windup.xml`) in the *customrules* directory that you have already downloaded in your file system.
+
+Drag and drop the file or upload it from your local file system.
+
+image::upload-custom-rule.png[upload-custom-rule]
+
+Click on `Add`. Make sure if the custom rule is added. Click on `Next`.
+
+image::enable-custom-rule.png[enable-custom-rule]
+
+Then, click on `Next` in `Advanced options` to stick with the default options.
+
+image::fine-tune.png[Fine tuning]
+
+Lastly, we are presented with a summary of the configuration for our analysis. 
+
+image::finish-project.png[Finish project]
+
+Click on `Run`.
+
+Now the new analysis has been scheduled, and once it is finished you will be able to access the reports. Stay on this view until the analysis is finished.
+
+Unfold the customers application. Then click on `Report`.
+
+[NOTE]
+====
+The analysis will take a few minutes to pull the Windup image and execute the application analysis. 
+====
+
+image::new-active-analysis.png[Active analysis]
 
 Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that it now reports `0` Story Points.
 
 You have successfully migrated this app and now ready to deploy to OpenShift, *congratulations!*
 
-image::report-solution-view.png[View report] 
-
-➡️ link:./5-rehost.adoc[5. Rehost]
-
-⬅️ link:./3-analyze.adoc[3. Analyze]
+image::new-report-solution-view.png[New view report] 

@@ -3,20 +3,19 @@
 
 Application modernization strategies are often categorized into the `6R`’s framework that was popularized by Amazon (and prior the 5Rs by Gartner). Here is what they mean.
 
-image::mod-strategies.png[Modernization Strategies]
+image::mod-strategies-refactor.png[Modernization Strategies]
 
-Red Hat helps our customers' application modernization journey with this approach:
+`Refactor` to Microservices with `High Benefits` as below:
 
-image::app-mod-approach.png[Modernization Approach]
+* Iteratively strangle services into individual observable microservices running in separate containers.
+* More productive developers via fast inner loop development. Faster startup time using link:https://www.redhat.com/en/products/runtimes[cloud-native runtimes^] (e.g. link:https://www.redhat.com/en/topics/cloud-native-apps/what-is-quarkus[Quarkus^], link:https://access.redhat.com/products/spring-boot[Spring Boot^])
+* Isolated domains allow for faster iteration, recovery of services, efficient scalability, and ability to experiment more quickly.
+* Basis to begin integrating with application services for greater innovation and reach at lower costs
 
-This module will walk you through 2 of the phases (_Assess_, _Rationalize_) as following steps:
+This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as following steps:
 
-* Assessment and Analysis of the legacy application using https://www.konveyor.io/tools/tackle/[Konveyor Tackle^]
-
-[NOTE]
-====
-We'll replace _Tackle_ with *Migration Toolkit for Applications (MTA) 6.x* that will build on _Tackle_ and _PathFinder_ to provide application assessment and analysis features in the future.
-====
+* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the Tackle Analysis report
+* Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
 
 == 1.1. Understand the Globex Retail System Architecture
 
