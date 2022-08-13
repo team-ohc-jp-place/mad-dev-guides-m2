@@ -1,4 +1,4 @@
-= 3. Deploy to Kubernetes - 25 minutes
+= 3. Deploy to Kubernetes - 10 minutes
 :imagesdir: ../assets/images
 
 == Goals of this lab

@@ -1,4 +1,4 @@
-= 2. Refactor - 25 minutes
+= 2. Refactor - 40 minutes
 :imagesdir: ../assets/images
 
 == Goals of this lab
