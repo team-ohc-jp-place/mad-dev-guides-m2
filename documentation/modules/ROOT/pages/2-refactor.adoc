@@ -143,7 +143,7 @@ The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_vir
 Access link:https://console-openshift-console.apps.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
 
 * Username: `%USERID%`
-* Password: `openshift`
+* Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
  
