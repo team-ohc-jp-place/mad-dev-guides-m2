@@ -33,7 +33,7 @@ The services running on OpenShift are deployed in a namespace `retail-%USERID%`.
 
 [IMPORTANT]
 ====
-You will focus on refactoring the legacy application and deploy it to the OpenShift cluster using a binary build strategy today.
+You will focus on refactoring the legacy application in the above red box section and deploy it to the OpenShift cluster using a binary build strategy today.
 ====
 
 [NOTE]
