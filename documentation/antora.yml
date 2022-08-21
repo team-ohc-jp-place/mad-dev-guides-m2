@@ -1,5 +1,5 @@
 name: mad-dev-guides-m2
-title: Module 2
+title: Module 2 - Refactor and Deployment
 version: main
 nav:
   - modules/ROOT/nav.adoc
