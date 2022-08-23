@@ -38,7 +38,7 @@ Run the following command in the terminal.
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/app-mod-projects/customers-tomcat-legacy 
+cd $HOME/modern-app-dev/customers-tomcat-legacy 
 
 mkdir -p ocp/deployments
 

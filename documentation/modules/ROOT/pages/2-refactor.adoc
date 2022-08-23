@@ -168,7 +168,7 @@ Go to the `Terminal` window in VS Code server. Then, build and package the custo
 [.console-input]
 [source,sh,subs="+attributes,macros+"]
 ----
-cd $HOME/app-mod-projects/customers-tomcat-legacy/ &&
+cd $HOME/modern-app-dev/customers-tomcat-legacy/ &&
 mvn clean package
 ----
 
@@ -180,9 +180,9 @@ The output should end up with `BUILD SUCCESS`.
 ....
 [INFO] --- maven-war-plugin:3.3.1:war (default-war) @ customers-tomcat ---
 [INFO] Packaging webapp
-[INFO] Assembling webapp [customers-tomcat] in [/home/codeserver/app-mod-projects/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT]
+[INFO] Assembling webapp [customers-tomcat] in [/home/codeserver/modern-app-dev/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT]
 [INFO] Processing war project
-[INFO] Building war: /home/codeserver/app-mod-projects/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT.war
+[INFO] Building war: /home/codeserver/modern-app-dev/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT.war
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -214,7 +214,7 @@ image::tackle-search-new-customers.png[tackle-search-new-customers]
 
 [NOTE]
 ====
-You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.apps.%SUBDOMAIN%/%USERID%/app-mod-projects[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
+You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.apps.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
 
 image::gitea-repo.png[gitea-repo]
 
