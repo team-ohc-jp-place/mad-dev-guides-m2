@@ -75,9 +75,7 @@ http://localhost:3000/mad-dev-guides-m2/main/1-introduction.html?USERID=user1&SU
 ----
 oc new-app  https://github.com/RedHat-Middleware-Workshops/mad-dev-guides-m2.git --strategy=docker
 
-oc expose deploy mad-dev-guides-m2 --port 3000
-
-oc create route edge mad-dev-guides-m2 --service=mad-dev-guides-m2
+oc expose service/mad-dev-guides-m2
 ----
 
 ## Contributing

@@ -1,14 +1,9 @@
-FROM quay.io/openshiftlabs/node:14-alpine-mad
+FROM docker.io/antora/antora as builder
 
-RUN mkdir -p /opt/src
+ADD . /antora/
 
-WORKDIR /opt/src
+RUN antora generate --stacktrace site.yml
 
-ADD . /opt/src
+FROM registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-RUN chgrp -R 0 /opt/src && \
-    chmod -R g=u /opt/src
-
-RUN npm install
-
-CMD npm run dev -d
+COPY --from=builder /antora/gh-pages/ /var/www/html/
