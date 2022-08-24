@@ -3,7 +3,7 @@
 
 == Goals of this lab
 
-The goal is that you will build and deploy the modernized customer application to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^].
+The goal of this lab is to you will build and deploy the modernized customer application to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^].
 
 * Use the OpenShift binary build strategy to build and deploy the new, modernized application using Red Hat JBoss Web Server instead of Apache Tomcat as the runtime.
 * Test the new *customers* service
@@ -58,7 +58,7 @@ mvn clean package
 
 == 3.3. Build the application
 
-Create new build configuration, specifying image stream and application name. Run the following command in the terminal.
+Create a new build configuration, specifying image stream and application name. Run the following command in the terminal.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -91,7 +91,7 @@ The output should look like this.
 --> Success
 ----
 
-== 3.3. Start the binary build
+== 3.4. Start the binary build
 
 Start the binary build. Instruct OpenShift to use source directory for the binary input for the OpenShift image build.
 
@@ -123,7 +123,7 @@ Successfully pushed image-registry.openshift-image-registry.svc:5000/customers-q
 Push successful
 ----
 
-== 3.4. Create a new OpenShift application
+== 3.5. Create a new OpenShift application
 
 Create a new OpenShift application based on the image. Run the following command in the terminal.
 
@@ -164,7 +164,7 @@ You can add the following label to show the application running on the JBoss Web
 oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 ----
 
-== 3.4. Verify the new customers application
+== 3.6. Verify the new customers application
 
 `Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. Access link:https://console-openshift-console.apps.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
 
@@ -188,4 +188,4 @@ The output should look like this.
 
 == Summary
 
-You have now successfully deployed the new *customers* application after you have refactored the legacy application by fixing the migration issues you have. You'll learn how to implement `CI/CD` and `GitOps` for advanced application management on the Red Hat OpenShift cluster in `module 3`.
+You have now successfully remediated all the migration issues you have and refactoring the legacy application. In the next module, you'll learn how to implement `CI/CD` and `GitOps` for advanced application management on the Red Hat OpenShift cluster.

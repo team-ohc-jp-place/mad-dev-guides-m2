@@ -3,9 +3,9 @@
 
 == Goals of this lab
 
-The goal is to understand the modernization issues of the `customers` application and learn how you can fix them by the code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
+The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by the code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
 
-In this lab you will also analyze the customers application once again using Tackle Analysis when the all issue are fixed.
+You will also analyze the customers application once again using Tackle Analysis after all issues are fixed.
 
 == 2.1. Explore the Migration issues
 
@@ -163,7 +163,7 @@ image::update-app-props.png[update-app-props]
 
 === 2.2.7. Test the build
 
-Go to the `Terminal` window in VS Code server. Then, build and package the customers application again:
+Go to the `Terminal` window in VS Code server. Then, build and package the customer application again:
 
 [.console-input]
 [source,sh,subs="+attributes,macros+"]
@@ -193,7 +193,7 @@ The output should end up with `BUILD SUCCESS`.
 
 === 2.2.8. Re-run Tackle Analysis
 
-Let's go back to the link:https://tackle-tackle-%USERID%.apps.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze th modernized application (*customers*). 
+Let's go back to the link:https://tackle-tackle-%USERID%.apps.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
 
 Click on `Create new`.
 
@@ -239,7 +239,7 @@ Please make sure to see following success popup message on the right top. It pro
 image::upload-success.png[upload-success]
 ====
 
-You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as same targets of the legacy application.
+You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis.
 
 image::configure-analysis-checked.png[Configure Analysis]
 
