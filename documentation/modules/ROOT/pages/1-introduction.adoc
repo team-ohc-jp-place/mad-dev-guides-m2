@@ -12,24 +12,24 @@ image::mod-strategies-refactor.png[Modernization Strategies]
 * Isolated domains allow for faster iteration, recovery of services, efficient scalability, and ability to experiment more quickly.
 * Basis to begin integrating with application services for greater innovation and reach at lower costs
 
-This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as following steps:
+This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
 
 * Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the Tackle Analysis report
 * Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
 
 == 1.1. Understand the Globex Retail System Architecture
 
-The Globex system (workshop environment) has the whole microservices applications that are deployed multiple platforms such as virtual machines and container platform as below.
+The Globex system (workshop environment) consists of microservices applications that are deployed across multiple platforms such as virtual machines and a container platform as depicted below.
 
 image::architecture_initial_m2.png[architecture_initial_m2]
 
 Your initial state for this workshop is an environment that is spread over Red Hat Virtualization and Red Hat OpenShift Container Platform.
 
-Your application has been partially already moved from your legacy environments to OpenShift.
+Your application has already been partially moved from your legacy environments to OpenShift.
 
 The Globex retail system is multiple services consisting of a _Node.js_ frontend service which is getting its data via a gateway service. The gateway service is connected to three backend services such as customers, orders and inventory. Each service uses its own database to store data.
 
-The services running on OpenShift are deployed in a namespace `retail-%USERID%`. The services are eventually managed using the *OpenShift GitOps* and *Pipelines* in module 3.
+The services running on OpenShift are deployed in a namespace `retail-%USERID%`. The services will ultimately be managed using the *OpenShift GitOps* and *Pipelines* covered in module 3.
 
 [IMPORTANT]
 ====
@@ -43,7 +43,7 @@ You might see the customers pods are failed to run due to _ImagePullBackOff Erro
 
 All source code for the applications as well as the GitOps YAML manifests for all services are stored in a (GitHub compatible) *Gitea* repository that for workshop purposes is hosted on the OpenShift cluster.
 
-The problem right now is the *customers* service:
+The first issues is the *customers* service:
 
 * The customers service uses an old Java code base running on `Apache Tomcat` in a VM on `Red Hat Virtualization`. In this module you will refactor the legacy Java code and then deploy the application to OpenShift on top of Red Hat JBoss Web Server.
 * The customers database is using an `Oracle database` running as a VM in Red Hat Virtualization. Because this is Oracle you can not deploy the database as a Pod on OpenShift - therefore the Globex's SRE team will migrate a new virtual machine based on `OpenShift Virtualization` migrated by the `OpenShift Migration Toolkit for Virtualization`.
