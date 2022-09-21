@@ -166,7 +166,7 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 == 3.6. Verify the new customers application
 
-`Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. Access link:https://console-openshift-console.apps.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
+`Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
 
 image::customers-qa-topology.png[customers-qa-topology]
 

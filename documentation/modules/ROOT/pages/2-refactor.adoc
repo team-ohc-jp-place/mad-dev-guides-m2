@@ -140,7 +140,7 @@ In the meantime, the Globex retails system's *SRE team* has already migrated the
 The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^], an add-on to OpenShift Container Platform With OpenShift Virtualization, you can run and manage virtual machine workloads alongside container workloads.
 ====
 
-Access link:https://console-openshift-console.apps.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
@@ -193,7 +193,7 @@ The output should end up with `BUILD SUCCESS`.
 
 === 2.2.8. Re-run Tackle Analysis
 
-Let's go back to the link:https://tackle-tackle-%USERID%.apps.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
+Let's go back to the link:https://tackle-tackle-%USERID%.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
 
 Click on `Create new`.
 
@@ -214,7 +214,7 @@ image::tackle-search-new-customers.png[tackle-search-new-customers]
 
 [NOTE]
 ====
-You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.apps.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
+You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
 
 image::gitea-repo.png[gitea-repo]
 
