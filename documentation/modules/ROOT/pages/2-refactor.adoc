@@ -3,7 +3,7 @@
 
 == Goals of this lab
 
-The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by the code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
+The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
 
 You will also analyze the customers application once again using Tackle Analysis after all issues are fixed.
 
