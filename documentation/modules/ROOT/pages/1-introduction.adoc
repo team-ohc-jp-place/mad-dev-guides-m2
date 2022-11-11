@@ -1,6 +1,11 @@
 = 1. Introduction - 10 minutes
 :imagesdir: ../assets/images
 
+[NOTE]
+====
+If you've already completed the introduction lab in the previous module, feel free to move forward directly to the 'Refactor' lab.
+====
+
 A common way of speaking about migrating or modernizing workloads to the cloud has been coined as `the 6 Rs framework`. This framework can be broken down as follows.
 
 image::mod-strategies-refactor.png[Modernization Strategies]
