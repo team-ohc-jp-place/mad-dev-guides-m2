@@ -3,7 +3,9 @@
 
 == Goals of this lab
 
-The goal of this lab is to you will build and deploy the modernized customer application to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^].
+The goal of this exercise is to build and deploy the modernized customer application to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^].
+
+You will:
 
 * Use the OpenShift binary build strategy to build and deploy the new, modernized application using Red Hat JBoss Web Server instead of Apache Tomcat as the runtime.
 * Test the new *customers* service
@@ -21,7 +23,7 @@ oc login -u %USERID% -p openshift https://openshift.default.svc:443
 ----
 ====
 
-Create a new project in the OpenShift cluster to deploy a new modernized application, *customers*. Run the following command in the terminal.
+Create a new project in the OpenShift cluster to deploy our newly-modernized application, *customers*. Run the following command in the terminal.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -31,14 +33,12 @@ oc new-project customers-qa-%USERID%
 
 == 3.2. Prepare the directory structure
 
-Create the source directory for the binary build on your local file system and the `deployments/` subdirectory. Copy the WAR archive to `deployments/`.
-
-Run the following command in the terminal.
+Create a directory for the binary build on your local file system and the `deployments/` subdirectory. Copy the WAR archive to `deployments/` directory by running the following commands in the terminal:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
 ----
-cd $HOME/modern-app-dev/customers-tomcat-legacy 
+cd $HOME/modern-app-dev/customers-tomcat-legacy
 
 mkdir -p ocp/deployments
 
@@ -47,7 +47,7 @@ cp target/customers-tomcat-0.0.1-SNAPSHOT.war ocp/deployments/
 
 [IMPORTANT]
 ====
-Make sure if you built the `customers-tomcat-legacy` project *successfully* using the following maven command.
+Compile the `customers-tomcat-legacy` project using the following maven command:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -56,9 +56,9 @@ mvn clean package
 ----
 ====
 
-== 3.3. Build the application
+== 3.3. Build the application container image
 
-Create a new build configuration, specifying image stream and application name. Run the following command in the terminal.
+Create a new build configuration, specifying image stream and application name. Run the following command in the terminal to do this:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -75,8 +75,8 @@ The output should look like this.
 ----
 --> Found image dbaf036 (8 weeks old) in image stream "openshift/jboss-webserver56-openjdk11-tomcat9-openshift-ubi8" under tag "latest" for "jboss-webserver56-openjdk11-tomcat9-openshift-ubi8:latest"
 
-    JBoss Web Server 5.6 OpenJDK11 
-    ------------------------------ 
+    JBoss Web Server 5.6 OpenJDK11
+    ------------------------------
     Platform for building and running web applications on JBoss Web Server 5.6 with OpenJDK11 - Tomcat v9
 
     Tags: builder, java, tomcat9
@@ -93,9 +93,9 @@ The output should look like this.
 
 == 3.4. Start the binary build
 
-Start the binary build. Instruct OpenShift to use source directory for the binary input for the OpenShift image build.
+Start the binary build based on that build configuration just created. Instruct OpenShift to use the `ocp` directory you created for the binary input for the image build.
 
-Run the following command in the terminal.
+Run the following command in the terminal to start the build:
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -125,7 +125,7 @@ Push successful
 
 == 3.5. Create a new OpenShift application
 
-Create a new OpenShift application based on the image. Run the following command in the terminal.
+Create a new OpenShift application based on the newly-built container image. Run the following command in the terminal.
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -140,8 +140,8 @@ The output should look like this.
 ----
 --> Found image 10491ac (3 minutes old) in image stream "customers-qa-%USERID%/customers" under tag "latest" for "customers"
 
-    JBoss Web Server 5.6 OpenJDK11 
-    ------------------------------ 
+    JBoss Web Server 5.6 OpenJDK11
+    ------------------------------
     Platform for building and running web applications on JBoss Web Server 5.6 with OpenJDK11 - Tomcat v9
 
     Tags: builder, java, tomcat9
@@ -152,7 +152,7 @@ The output should look like this.
     service "customers" created
 --> Success
     Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
-     'oc expose service/customers' 
+     'oc expose service/customers'
     Run 'oc status' to view your app.
 ----
 
@@ -170,7 +170,7 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-Access the following RESTful API of the customers application to retrieve the customer data in the new Oracle database on OpenShift virtualization. 
+Access the following RESTful API of the customers application to retrieve the customer data in the new Oracle database on OpenShift virtualization.
 
 [.console-input]
 [source,bash]
@@ -186,6 +186,8 @@ The output should look like this.
 {"id":1,"username":"phlegm_master_19","name":"Guybrush","surname":"Threepwood","address":"1060 West Addison","zipCode":"ME-001","city":"Melee Town","country":"Melee Island"}
 ----
 
+This shows that the newly-modernized application running on OpenShift can successfully retrieve customer data from the backend database.
+
 == Summary
 
-You have now successfully remediated all the migration issues you have and refactoring the legacy application. In the next module, you'll learn how to implement `CI/CD` and `GitOps` for advanced application management on the Red Hat OpenShift cluster.
+Congratulations! You have now successfully remediated all the migration issues you have found and refactored the legacy application. In the next module, you'll learn how to implement `CI/CD` and `GitOps` for advanced application management on your Red Hat OpenShift cluster.
