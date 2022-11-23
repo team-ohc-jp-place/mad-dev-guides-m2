@@ -3,9 +3,9 @@
 
 == Goals of this lab
 
-The goal of this lab is to understand the modernization issues related to the `customers` application that you found in the previous exercise and learn how you can resolve them by code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue.
+The goal of this lab is to understand the modernization issues related to the `customers` application that you found in the previous exercise and learn how you can resolve them by code modification. The MTA Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue.
 
-At the end, you will again analyze the customers application using Tackle Analysis to confirm that the issues were successfully fixed.
+At the end, you will again analyze the customers application using MTA Analysis to confirm that the issues were successfully fixed.
 
 == 2.1. Explore the Migration issues
 
