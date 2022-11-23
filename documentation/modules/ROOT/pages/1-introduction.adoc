@@ -19,7 +19,7 @@ image::mod-strategies-refactor.png[Modernization Strategies]
 
 This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
 
-* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the Tackle Analysis report
+* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
 * Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
 
 == 1.1. Understand the Globex Retail System Architecture
@@ -85,7 +85,7 @@ Your OpenShift cluster is already configured with everything you need. Here are 
 * `Migration Toolkit for Virtualization` to facilitate the migration of the Oracle VM from Red Hat Virtualization to Red Hat OpenShift Container Platform)
 * `OpenShift GitOps` to manage the deployed services using a GitOps approach through ArgoCD
 * `OpenShift Pipelines` to build the customer application from source code and deploy to the `retail` project using GitOps
-* `Migration Toolkit for Applications (Tackle)` to help modernize the customer service Java source code.
+* `Migration Toolkit for Applications` to help modernize the customer service Java source code.
 
 === 1.2.3. Visual Studio Code Server
 

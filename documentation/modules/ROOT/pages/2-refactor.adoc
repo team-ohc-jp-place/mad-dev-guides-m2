@@ -3,9 +3,9 @@
 
 == Goals of this lab
 
-The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
+The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by code modification. The MTA Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
 
-You will also analyze the customers application once again using Tackle Analysis after all issues are fixed.
+You will also analyze the customers application once again using MTA Analysis after all issues are fixed.
 
 == 2.1. Explore the Migration issues
 
@@ -191,13 +191,13 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] ------------------------------------------------------------------------
 ----
 
-=== 2.2.8. Re-run Tackle Analysis
+=== 2.2.8. Re-run MTA Analysis
 
-Let's go back to the link:https://tackle-tackle-%USERID%.%SUBDOMAIN%/applications/analysis-tab[Tackle Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
+Let's go back to the link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
 
 Click on `Create new`.
 
-image::tackle-new-analysis.png[tackle-new-analysis]
+image::tackle-new-analysis.png[mta-new-analysis]
 
 Fill in the following fields, and click `Create`:
 
@@ -206,11 +206,11 @@ Fill in the following fields, and click `Create`:
 * Business service: `Retail`
 * Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
 
-image::tackle-new-app.png[tackle-new-app]
+image::tackle-new-app.png[mta-new-app]
 
 Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
 
-image::tackle-search-new-customers.png[tackle-search-new-customers]
+image::tackle-search-new-customers.png[mta-search-new-customers]
 
 [NOTE]
 ====
