@@ -3,27 +3,27 @@
 
 == Goals of this lab
 
-The goal of this lab is to understand the modernization issues related to the `customers` application and learn how you can resolve them by code modification. The MTA Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue. 
+The goal of this lab is to understand the modernization issues related to the `customers` application that you found in the previous exercise and learn how you can resolve them by code modification. The Tackle Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue.
 
-You will also analyze the customers application once again using MTA Analysis after all issues are fixed.
+At the end, you will again analyze the customers application using Tackle Analysis to confirm that the issues were successfully fixed.
 
 == 2.1. Explore the Migration issues
 
-According to the analysis report, the migration issues are related to external configurations with *hard coded static IP addresses*. 
+According to the analysis report, the migration issues are related to external configurations with *hard-coded static IP addresses*.
 
 image::static-ip-issue.png[static-ip-issue]
 
-Let's dig into the issue on the code level. Go to the web browser that opens the VS Code server. Explore the `customers-tomcat-legacy` project to open `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory.
+Let's look into the issue at the code level. In your VS Code server window, open the the `customers-tomcat-legacy` project and find `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory.
 
 image::persistence-class.png[persistence-class]
 
-The *dataSource()* method creates an `ApplicationConfiguration` instance to configure the JDBC variables such as _driverClassName_, _url_, _user_, and _password_. The ApplicationConfiguration ends up with referring to the hard coded IP address in `persistence.properties`.
+The `dataSource()` method creates an `ApplicationConfiguration` instance to configure JDBC variables such as _driverClassName_, _url_, _user_, and _password_. As you can see, the ApplicationConfiguration has a hard coded IP address reference in `persistence.properties`.
 
 image::applicationConfiguration-class.png[applicationConfiguration-class]
 
 == 2.2. Fix the External Configuration issues
 
-The legacy ApplicationConfiguration class is being used in this application. This is discouraged by the migration guidelines, and should be replaced by a more standard approach using Spring's `@PropertySource` annotation and Environment class. 
+The legacy ApplicationConfiguration class is being used in this application. This is discouraged by the migration guidelines, and should be replaced by a more appropriate approach using Spring's `@PropertySource` annotation and `Environment` class.
 
 === 2.2.1. Add Spring PropertySource annotation
 
@@ -37,7 +37,7 @@ Add the following annotation on top of `PersistenceConfig` public class.
 
 === 2.2.2. Update DataSource method
 
-Then, inject an `Environment` class using the `Spring Autowired` annotation to refer to local application configurations. Add the following code to the _PersistenceConfig_ class.
+Then, inject an instance of the `Environment` class using the Spring `@Autowired` annotation to refer to the local application configuration. Add the following class variable to the _PersistenceConfig_ class.
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -46,7 +46,7 @@ Then, inject an `Environment` class using the `Spring Autowired` annotation to r
     private Environment env;
 ----
 
-Replace the `dataSource()` method with the following code to get JDBC configurations by the _Environment_ injection.
+Replace the `dataSource()` method with the following code to get JDBC configurations through this the _Environment_ injection.
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -69,7 +69,7 @@ image::datasource-modification.png[datasource-modification]
 
 === 2.2.3. Update additionalProperties method
 
-You also need to remove the *ApplicationConfiguration* reference in the `additionalProperties()` method. Replace existing _additionalProperties_ method logic with the following code.
+You also need to remove the *ApplicationConfiguration* reference in the `additionalProperties()` method. Replace the existing _additionalProperties_ method with the following code.
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -86,9 +86,9 @@ You also need to remove the *ApplicationConfiguration* reference in the `additio
 
 === 2.2.4. Update Packages
 
-Remove unnecessary packages (e.g. _ApplicationConfiguration_) and add new packages for DI injection and PropertySource. 
+Remove unnecessary package imports (e.g. _ApplicationConfiguration_) and add new package images for DI injection and PropertySource.
 
-Replace the `import package` lines with the following code.
+The easiest way to do this is to replace all of the imports at the top of the file with this set of imports:
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -114,9 +114,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 === 2.2.5. Remove Corporate libraries
 
-Now, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment a dependency in your Maven project.
+With these changes, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment out the dependency in your Maven project.
 
-Open the `pom.xml` and comment the following `config-utils` dependency.
+Open the `pom.xml` and comment (or remove) the following `config-utils` dependency.
 
 [.console-input]
 [source,xml,subs="+attributes,macros+"]
@@ -137,17 +137,17 @@ In the meantime, the Globex retails system's *SRE team* has already migrated the
 
 [TIP]
 ====
-The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^], an add-on to OpenShift Container Platform With OpenShift Virtualization, you can run and manage virtual machine workloads alongside container workloads.
+The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^]. This is an add-on to OpenShift Container Platform, enabling you to run and manage virtual machine workloads alongside container workloads.
 ====
 
-Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in the Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
- 
-Open the `application.properties` in *src/main/resources/persistence.properties* to access the *customers* data in the new *oracle-database* virtual machine on OpenShift. Open 
+
+In VSCode, Open the `application.properties` in *src/main/resources/persistence.properties* to access the *customers* data in the new *oracle-database* virtual machine on OpenShift.
 
 Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
 
@@ -193,11 +193,11 @@ The output should end up with `BUILD SUCCESS`.
 
 === 2.2.8. Re-run MTA Analysis
 
-Let's go back to the link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^]. Then, create a new inventory to analyze the modernized application (*customers*). 
+Go back to the link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^] and create a new inventory element to analyze the modernized application (*customers*).
 
 Click on `Create new`.
 
-image::tackle-new-analysis.png[mta-new-analysis]
+image::mta-new-analysis.png[mta-new-analysis]
 
 Fill in the following fields, and click `Create`:
 
@@ -206,19 +206,19 @@ Fill in the following fields, and click `Create`:
 * Business service: `Retail`
 * Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
 
-image::tackle-new-app.png[mta-new-app]
+image::mta-new-app.png[mta-new-app]
 
 Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
 
-image::tackle-search-new-customers.png[mta-search-new-customers]
+image::mta-search-new-customers.png[mta-search-new-customers]
 
 [NOTE]
 ====
-You can use the solution artifact (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] rather than walking through multiple steps from _commit_ to _push_, and _pull_ the new application artifact (_.war_ file) to your local file system..
+Normally you would commit the code change, rebuild the application, and use that to analyse. To save time, you can find the already-modernized application (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^]. You can use this instead of walking through multiple steps from _commit_ to _push_, and _pull_, and _build_ the new application artifact (_.war_ file) in your local file system.
 
 image::gitea-repo.png[gitea-repo]
 
-You can also log in to the Gitea repository with the following credentials.
+You can log in to the Gitea repository with the following credentials.
 
 * Username - `%USERID%`
 * Password - `openshift`
@@ -234,12 +234,12 @@ Click on `Next`.
 
 [NOTE]
 ====
-Please make sure to see following success popup message on the right top. It probably will take a few seconds to complete uploading the binary file. 
+Please make sure to see following success popup message on at the upper right. It probably will take a few seconds to complete the uploading of the binary file.
 
 image::upload-success.png[upload-success]
 ====
 
-You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis.
+You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis just as before.
 
 image::configure-analysis-checked.png[Configure Analysis]
 
@@ -265,29 +265,32 @@ Click on `Add`. Make sure if the custom rule is added. Click on `Next`.
 
 image::enable-custom-rule.png[enable-custom-rule]
 
-Then, click on `Next` in `Advanced options` to stick with the default options.
+Next, click on `Next` in `Advanced options` to stick with the default options.
 
 image::fine-tune.png[Fine tuning]
 
-Lastly, we are presented with a summary of the configuration for our analysis. 
+Lastly, we are presented with a summary of the configuration for our analysis.
 
 image::finish-project.png[Finish project]
 
 Click on `Run`.
 
-Now the new analysis has been scheduled, and once it is finished you will be able to access the reports. Stay on this view until the analysis is finished.
+Now the new analysis will start, and once it is finished you will be able to access the reports. Stay on this view until the analysis is finished.
 
-Unfold the customers application. Then click on `Report`.
+Expand the customers application using the caret on the left. Then click on `Report`.
 
 [NOTE]
 ====
-The analysis will take a few minutes to pull the Windup image and execute the application analysis. 
+The analysis will take a few minutes to pull the Windup image and execute the application analysis.
 ====
 
 image::new-active-analysis.png[Active analysis]
 
 Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that it now reports `0` Story Points.
 
+## Congratulations!
+
 You have successfully migrated this app and now ready to deploy to OpenShift, *congratulations!*
 
-image::new-report-solution-view.png[New view report] 
+image::new-report-solution-view.png[New view report]
+
