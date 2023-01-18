@@ -147,7 +147,7 @@ Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail
 
 image::retail-topology.png[comment-dep]
 
-In VSCode, Open the `application.properties` in *src/main/resources/persistence.properties* to access the *customers* data in the new *oracle-database* virtual machine on OpenShift.
+In VSCode, Open the `persistence.properties` in the *src/main/resources* folder to access the *customers* data in the new *oracle-database* virtual machine on OpenShift.
 
 Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
 
