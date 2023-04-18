@@ -1,6 +1,6 @@
 name: mad-dev-guides-m2
 title: Module 2 - Refactor and Deployment
-version: main
+version: main-jp
 nav:
   - modules/ROOT/nav.adoc
 start_page: ROOT:1-introduction.adoc
