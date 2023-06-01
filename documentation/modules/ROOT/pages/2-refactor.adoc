@@ -1,33 +1,35 @@
-= 2. Refactor - 40 minutes
+= 2. リファクタリング – 40分
 :imagesdir: ../assets/images
 
-== Goals of this lab
+== 本演習の目標
 
 The goal of this lab is to understand the modernization issues related to the `customers` application that you found in the previous exercise and learn how you can resolve them by code modification. The MTA Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue.
+本演習の目標は、前回の演習で確認した `customers` アプリケーションに関するモダナイゼーションの問題を理解し、コードの修正による対応を確認することです。MTA Analysisのレポートには、 *各問題のファイル名*、*パス*、*解決策の推奨事項* などの詳細情報も記載されています。
 
-At the end, you will again analyze the customers application using MTA Analysis to confirm that the issues were successfully fixed.
+本演習の最後に、再度MTA分析にて「Customers」アプリケーションを分析し、各問題が正常に修正されたか確認します。
 
-== 2.1. Explore the Migration issues
+== 2.1. マイグレーション問題の調査
 
-According to the analysis report, the migration issues are related to external configurations with *hard-coded static IP addresses*.
+分析レポートによると、このマイグレーションの対する問題は、ハードコーディングされた *固定IPアドレス* による外部構成に関連するものとなっています。
 
 image::static-ip-issue.png[static-ip-issue]
 
-Let's look into the issue at the code level. In your VS Code server window, open the the `customers-tomcat-legacy` project and find `PersistenceConfig.java` file in *src/main/java/io/konveyor/demo/ordermanagement/config* directory.
+この問題をコードレベルで確認します。VS Codeサーバーのウィンドウで、 `customers-tomcat-legacy` プロジェクトを開き、 *src/main/java/io/konveyor/demo/
+ordermanagement/config* ディレクトリにある `PersistenceConfig.java` ファイルを確認してください。
 
 image::persistence-class.png[persistence-class]
 
-The `dataSource()` method creates an `ApplicationConfiguration` instance to configure JDBC variables such as _driverClassName_, _url_, _user_, and _password_. As you can see, the ApplicationConfiguration has a hard coded IP address reference in `persistence.properties`.
+ `dataSource()` メソッドでは、 _driverClassName_ 、 _url_ 、_user_ 、 _password_ などのJDBC変数を設定するための `ApplicationConfiguration` インスタンスが作成されています。このファイルを確認すると、「ApplicationConfiguration」には、 `persistence.properties` にハードコーディングされたIPアドレスを参照している箇所があることが分かります。
 
 image::applicationConfiguration-class.png[applicationConfiguration-class]
 
-== 2.2. Fix the External Configuration issues
+== 2.2. 外部構成に関する問題の修正
 
-The legacy ApplicationConfiguration class is being used in this application. This is discouraged by the migration guidelines, and should be replaced by a more appropriate approach using Spring's `@PropertySource` annotation and `Environment` class.
+このアプリケーションでは、レガシーな 「ApplicationConfiguration」クラスが使用されています。これはマイグレーションのガイドラインでは推奨されておらず、Springの `@PropertySource` アノテーションと `Environment` クラスを使用したより適切なアプローチに置き換える必要があります。
 
-=== 2.2.1. Add Spring PropertySource annotation
+=== 2.2.1. Spring PropertySourceアノテーションの追加
 
-Add the following annotation on top of `PersistenceConfig` public class.
+`PersistenceConfig` のpublic classの上に、以下のアノテーションを追加してください。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -35,9 +37,10 @@ Add the following annotation on top of `PersistenceConfig` public class.
 @PropertySource("classpath:persistence.properties")
 ----
 
-=== 2.2.2. Update DataSource method
+=== 2.2.2. DataSourceメソッドの更新
 
 Then, inject an instance of the `Environment` class using the Spring `@Autowired` annotation to refer to the local application configuration. Add the following class variable to the _PersistenceConfig_ class.
+続いて、Springの `@Autowired` アノテーションを使用して、 `Environment` クラスのインスタンスをインジェクションし、ローカルアプリケーション構成を参照します。 _PersistenceConfig_ クラスに以下のクラス変数を追加してください。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -46,7 +49,7 @@ Then, inject an instance of the `Environment` class using the Spring `@Autowired
     private Environment env;
 ----
 
-Replace the `dataSource()` method with the following code to get JDBC configurations through this the _Environment_ injection.
+`dataSource()` メソッドを以下のコードに置き換えることで、この _Environment_ クラスのインジェクションによるJDBC設定を取得できます。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -63,13 +66,13 @@ Replace the `dataSource()` method with the following code to get JDBC configurat
     }
 ----
 
-The `PersistenceConfig` class should look like this.
+`PersistenceConfig` クラスは、以下のようになります。
 
 image::datasource-modification.png[datasource-modification]
 
-=== 2.2.3. Update additionalProperties method
+=== 2.2.3. additionalPropertiesメソッドの更新
 
-You also need to remove the *ApplicationConfiguration* reference in the `additionalProperties()` method. Replace the existing _additionalProperties_ method with the following code.
+また、 `additionalProperties()` メソッド内の *ApplicationConfiguration* の参照を削除する必要があります。既存の _additionalProperties_ メソッドを以下のコードに置き換えてください。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -84,11 +87,11 @@ You also need to remove the *ApplicationConfiguration* reference in the `additio
     }
 ----
 
-=== 2.2.4. Update Packages
+=== 2.2.4. パッケージの更新
 
-Remove unnecessary package imports (e.g. _ApplicationConfiguration_) and add new package images for DI injection and PropertySource.
+不要なパッケージのインポート（ _ApplicationConfiguration_ など）を削除し、依存性の注入（DI）やPropertySource向けの新規パッケージイメージを追加します。
 
-The easiest way to do this is to replace all of the imports at the top of the file with this set of imports:
+上記を最も簡単に実施できる方法は、ファイルの先頭にあるすべてのインポートをこのインポートのセットに置き換えることです。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
@@ -112,11 +115,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 ----
 
-=== 2.2.5. Remove Corporate libraries
+=== 2.2.5. Corporate ライブラリの削除
 
 With these changes, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment out the dependency in your Maven project.
+今回の変更で、外部のcorporateライブラリーを参照する必要がなくなったため、Mavenプロジェクトで依存関係を削除もしくは、コメントアウトします。
 
-Open the `pom.xml` and comment (or remove) the following `config-utils` dependency.
+`pom.xml`　を開き、以下の　`config-utils`　の依存関係をコメントアウト（または削除）してください。
 
 [.console-input]
 [source,xml,subs="+attributes,macros+"]
@@ -131,25 +135,25 @@ Open the `pom.xml` and comment (or remove) the following `config-utils` dependen
 
 image::comment-dep.png[comment-dep]
 
-=== 2.2.6. Update application.properties
+=== 2.2.6. application.propertiesの更新
 
-In the meantime, the Globex retails system's *SRE team* has already migrated the `Oracle database` running from the virtual machine on `Red Hat Virtualization` to `OpenShift Virtualization` based on KubeVirt.
+一方、Globex Retailsのシステム管理を行っている *SRE team* チームは、 `Red Hat Virtualization` 上の仮想マシンで稼働していた `Oracleデータベース` を、KubeVirtをベースにした `OpenShift Virtualization` へのマイグレーション作業をすでに実施しています。
 
 [TIP]
 ====
-The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^]. This is an add-on to OpenShift Container Platform, enabling you to run and manage virtual machine workloads alongside container workloads.
+link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] は、VMware vSphereやRed Hat Virtualizationから link:https://kubevirt.io[KubeVirt^] ベースのOpenShift Virtualizationへ仮想マシンのマイグレーションを行うことができます。OpenShift Container Platformのアドオンで、コンテナワークロードと並行して仮想マシンのワークロードの実行および管理が可能となります。
 ====
 
-Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in the Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+「Developer」パースペクティブで「reatail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `Oracleデータベース` の仮想マシンが表示されています。
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
 
-In VSCode, Open the `persistence.properties` in the *src/main/resources* folder to access the *customers* data in the new *oracle-database* virtual machine on OpenShift.
+VS Codeで、 *src/main/resources* フォルダの `persistence.properties` を開き、OpenShift上の新しい *Oracleデータベース* の仮想マシンの *Customers* データにアクセスします。
 
-Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
+`jdbc.url` 、 `jdbc.user` 、 `jdbc.password` など、以下のキーと値を置き換えてください。
 
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
@@ -161,9 +165,9 @@ jdbc.password=redhat
 
 image::update-app-props.png[update-app-props]
 
-=== 2.2.7. Test the build
+=== 2.2.7. 構築のテスト
 
-Go to the `Terminal` window in VS Code server. Then, build and package the customer application again:
+VS Code Serverの `Terminal` ウィンドウに移動します。その後、お客様のアプリケーションを再度構築してパッケージ化を行います。
 
 [.console-input]
 [source,sh,subs="+attributes,macros+"]
@@ -172,7 +176,7 @@ cd $HOME/modern-app-dev/customers-tomcat-legacy/ &&
 mvn clean package
 ----
 
-The output should end up with `BUILD SUCCESS`.
+`BUILD SUCCESS` と出力されていることをご確認ください。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -191,15 +195,15 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] ------------------------------------------------------------------------
 ----
 
-=== 2.2.8. Re-run MTA Analysis
+=== 2.2.8. MTA Analysisの再実行
 
-Go back to the link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^] and create a new inventory element to analyze the modernized application (*customers*).
+モダナイゼーションされたアプリケーション（*customers*）を分析するため、 link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^] に戻り、新しいインベントリ要素の作成を行います。
 
-Click on `Create new`.
+`Create new` をクリックしてください。
 
 image::mta-new-analysis.png[mta-new-analysis]
 
-Fill in the following fields, and click `Create`:
+その後、以下の項目を入力し、 `Create` をクリックしてください。
 
 * Name: `New Customers`
 * Description: `Modernized Customers management service`
@@ -208,89 +212,91 @@ Fill in the following fields, and click `Create`:
 
 image::mta-new-app.png[mta-new-app]
 
-Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
+「Application Inventory」に戻り、 `New Customers` で検索を実施してください。検索後、 _New Customers_ アプリケーションのインベントリを選択し、 `Analyze` をクリックしてください。
 
 image::mta-search-new-customers.png[mta-search-new-customers]
 
-[NOTE]
+[注]
 ====
 Normally you would commit the code change, rebuild the application, and use that to analyse. To save time, you can find the already-modernized application (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^]. You can use this instead of walking through multiple steps from _commit_ to _push_, and _pull_, and _build_ the new application artifact (_.war_ file) in your local file system.
 
+通常は、コードの変更をコミットしてアプリケーションを再構築し、再構築したアプリケーションにて分析を行います。しかし、この分析を早く行うために、固定コードと一緒にパッケージ化されていて且つ、既にモダナイゼーションされたアプリケーション（`customers-tomcat-solution.war`）が link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea リポジトリ^]にあります。 _コミット_ から _プッシュ_ 、 _プル_ までの複数のステップを実施する代わりにこちらを使用し、新しいアプリケーションのアーティファクト（_.war_ ファイル）をローカルファイルシステムに _ビルド_ 可能です。
+
 image::gitea-repo.png[gitea-repo]
 
-You can log in to the Gitea repository with the following credentials.
+Giteaリポジトリには、以下の認証情報でログインしてください。
 
 * Username - `%USERID%`
 * Password - `openshift`
 ====
 
-Once you download or clone the project to your local file system, explore if the `customers-tomcat-solution.war` file exists in the *packages-mta* folder.
+プロジェクトをローカルファイルシステムにダウンロード、もしくは複製後、 *packages-mta* フォルダに `customers-tomcat-solution.war` ファイルが存在するかどうか確認してください。
 
-Select `Upload local binary` in Analysis mode popup. Then, drag and drop the *customers-tomcat-solution.war* file or Upload it from your local file system.
+分析モードのポップアップウィンドウから `Upload local binary` オプションを選択します。選択後、 *customers-tomcat-solution.war* ファイルをドラッグ＆ドロップするか、ローカルファイルシステムからアップロードしてください。
 
 image::add-new-applications.png[Add new applications]
 
-Click on `Next`.
+実施後、 `Next`をクリックしてください。
 
-[NOTE]
+[注意]
 ====
-Please make sure to see following success popup message on at the upper right. It probably will take a few seconds to complete the uploading of the binary file.
+アップロード完了後、画面右上に、以下の成功ポップアップメッセージが表示されたかご確認ください。バイナリファイルのアップロード完了には、数秒かかります。
 
 image::upload-success.png[upload-success]
 ====
 
 You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis just as before.
+アップロードの正常完了後、変換対象のオプションが表示されます。先ほどと同様にアプリケーション分析のパラメータとして`Containers`, `Linux`, `OpenJDK`　を選択してください。
 
 image::configure-analysis-checked.png[Configure Analysis]
 
-Click on `Next`.
+選択後、 `Next`　をクリックしてください。
 
-Select `Application and internal dependencies only` for the scope of dependencies.
+依存関係の範囲に　`Application and internal dependencies only`　 for the scope of dependencies.」を選択します。
 
 image::packages.png[Select packages]
 
-Click on `Next`.
+選択後、 `Next`をクリックしてください。
 
-You will now be presented with options for custom rules.
+依存関係の範囲を選択後、カスタムルールのオプションが表示されます。
 
 image::custom-rules.png[Custom rules]
 
-Click on `Add Rule` to upload a custom rule (`corporate-framework-config.windup.xml`) in the *customrules* directory that you have already downloaded in your file system.
+`Add Rule`　をクリックして、ファイルシステムにダウンロード済みの *customrules* ディレクトリにあるカスタムルール（`corporate-framework-config.windup.xml`）をアップロードしてください。
 
-Drag and drop the file or upload it from your local file system.
+ファイルをドラッグ＆ドロップするか、ローカルファイルシステムからアップロードしてください。
 
 image::upload-custom-rule.png[upload-custom-rule]
 
-Click on `Add`. Make sure if the custom rule is added. Click on `Next`.
+アップロード後、　`Add`　をクリックしてください。クリック後、カスタムルールが追加されていることを確認してください。確認後、　`Next`　をクリックします。
 
 image::enable-custom-rule.png[enable-custom-rule]
 
-Next, click on `Next` in `Advanced options` to stick with the default options.
+次に、デフォルト値で実施するため、　`Advanced options`　にて　`Next`　をクリックします、
 
 image::fine-tune.png[Fine tuning]
 
-Lastly, we are presented with a summary of the configuration for our analysis.
+最後に、分析の構成についてまとめてご紹介します。
 
 image::finish-project.png[Finish project]
 
-Click on `Run`.
+`Run`　をクリックしてください。
 
-Now the new analysis will start, and once it is finished you will be able to access the reports. Stay on this view until the analysis is finished.
+分析処理が始まり、完了後に分析レポートにアクセスできるようになります。分析処理が完了するまで、お待ちください。
 
-Expand the customers application using the caret on the left. Then click on `Report`.
+分析処理の完了後、左のキャレットから「Customers」アプリケーションを展開します。その後、　`Report`　をクリックしてください。
 
-[NOTE]
+[注]
 ====
-The analysis will take a few minutes to pull the Windup image and execute the application analysis.
+Windup用のコンテナイメージのダウンロードおよびアプリケーション分析のため、処理に数分かかる場合があります。
 ====
 
 image::new-active-analysis.png[Active analysis]
 
-Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that it now reports `0` Story Points.
+「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成してください。レポートの生成後、レポート内にて、ストーリーポイントが　`0`　になったことを確認してください。
 
-## Congratulations!
+## おめでとうございます!
 
-You have successfully migrated this app and now ready to deploy to OpenShift, *congratulations!*
+以上で、対象のアプリケーションのマイグレーションが成功し、OpenShiftへのデプロイに向けて準備が整いました。　＊お疲れさまでした。＊　
 
 image::new-report-solution-view.png[New view report]
-
