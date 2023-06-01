@@ -1,111 +1,113 @@
-= 1. はじめに - 10 minutes
+= 1. はじめに - 10 分
 :imagesdir: ../assets/images
 
-[NOTE]
+[注]
 ====
-If you've already completed the introduction exercise in the previous module, feel free to skip to the 'Refactor' lab. This exercise is meant to introduce you to the environment and confirm your services are running correctly.
+前モジュールの導入演習をすでに受講済みの場合は、 'Refactor' 演習までスキップしてください。本演習では、対象のサービスが稼働環境にて、正常に動作しているか確認します。
 ====
 
-A common way of speaking about migrating or modernizing workloads to the cloud has been coined as the *6 Rs framework*. This framework can be broken down as follows.
+ワークロードのクラウドへのマイグレーションやモダナイゼーションに関する一般的な表現は、　*6R フレームワーク*　というキーワードで呼ばれています。このフレームワークは、以下のように分解することができます。
 
 image::mod-strategies-refactor.png[Modernization Strategies]
 
-For a Refactor (including rewrites or re-architectures),Red Hat helps our customers' application modernization journey with this approach:
+リファクタリング（ソースコードの書き換えや再構築を含む）について、Red Hatは、以下のアプローチでお客様のアプリケーションのモダナイゼーションを支援します。
 
-* Iteratively strangle services into individual observable microservices running in separate containers.
-* More productive developers via fast inner loop development. Faster startup time using link:https://www.redhat.com/en/products/runtimes[cloud-native runtimes^] (e.g. link:https://www.redhat.com/en/topics/cloud-native-apps/what-is-quarkus[Quarkus^], link:https://access.redhat.com/products/spring-boot[Spring Boot^])
-* Isolated domains allow for faster iteration, recovery of services, efficient scalability, and ability to experiment more quickly.
-* Basis to begin integrating with application services for greater innovation and reach at lower costs
+* サービスに対して、個別のコンテナで動作する個々の観測可能なマイクロサービスへ分割するための反復的な絞込み。
+* インナーループでの高速な開発により、開発者の生産性の向上および link:https://www.redhat.com/en/products/runtimes[cloud-native runtimes^]（link:https://www.redhat.com/en/topics/cloud-native-apps/what-is-quarkus[Quarkus^], link:https://access.redhat.com/products/spring-boot[Spring Boot^] など）を使用した起動時間の高速化
+* 分離したドメインによる、より高速なイテレーション、サービスの原状復帰、効率的なスケーラビリティ、そしてより迅速なエクスペリエンスの実現。
+* アプリケーションサービスとの統合の開始、更なるイノベーションおよびリ低コスト実現のための基礎
 
-This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
+このモジュールでは、2つのフェーズ（_リファクタリング_、_開発_）について以下のように説明します。
 
-* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
-* Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
+* https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] の分析レポートにおいて、レガシーアプリケーション（Customers）をリファクタリングしてレガシー設定の問題を修正します。
+* link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^] を使用して、モダナイゼーション後のアプリケーションをOpenShiftにデプロイします。
 
-== 1.1. Understand the Globex Retail System Architecture
+== 1.1. Globex Retailシステムアーキテクチャの理解
 
-Globex is a fictional company we will use for this workshop. The Globex system in your workshop environment consists of microservices applications that are deployed across multiple platforms such as virtual machines and a container platform as depicted below.
+Globexは、今回のワークショップで使用する架空の企業です。ワークショップ環境のGlobexのシステムは、以下のように仮想マシンやコンテナプラットフォームなど複数のプラットフォームにデプロイされたマイクロサービスアプリケーションで構成されています。
 
 image::architecture_initial_m2.png[architecture_initial_m2]
 
-Your initial state for this workshop is an environment that is spread over Red Hat Virtualization and Red Hat OpenShift Container Platform.
+このワークショップの初期状態は、Red Hat VirtualizationとRed Hat OpenShift Container Platformに分散された環境です。
 
-Your application has already been partially moved from your legacy environments to OpenShift.
+今回使用するアプリケーションは、すでにレガシー環境からOpenShiftに一部移行されている状態となります。
 
-The Globex retail application consists of a _Node.js_ frontend service which is getting its data via a gateway service. The gateway service is connected to three backend services: customers, orders and inventory. Each service uses its own database to store data.
+Globex Retailのアプリケーションは、 _Node.js_ のフロントエンドサービスから構成され、ゲートウェイサービスを通じてデータを取得します。ゲートウェイサービスは、「Customers」、「Orders」、「inventory」という3つのバックエンドサービスに接続されています。各サービスは、データを保存するためにそれぞれ独自のデータベースを使用します。
 
-The services running on OpenShift are deployed in a namespace `retail-%USERID%`. The services will ultimately be managed using *OpenShift GitOps* and *Pipelines* covered in module 3.
+OpenShift上で動作するサービスは、 ネームスペース `retail-%USERID%` にデプロイされます。そして最終的には、モジュール3にて、 *OpenShift GitOps* と *Pipelines* を使用してこれらのサービスを管理することになります。
 
-[IMPORTANT]
+[重要]
 ====
-In this exercise you will focus on refactoring the legacy application in the above red box section and deploy it to the OpenShift cluster.
-====
-
-[NOTE]
-====
-You might see the customers pods are in a failed state due to _ImagePullBackOff Error_. It will be automatically fixed when you finish the OpenShift CI/CD and GitOps sections later.
+本演習では、上記の赤枠部分のレガシーアプリケーションをリファクタリングし、OpenShiftクラスタにデプロイすることに中心に進めます。
 ====
 
-All source code for the applications as well as the GitOps YAML manifests for all services are stored in a (Git-compatible) *Gitea* repository that for workshop purposes is hosted on the OpenShift cluster.
+[注]
+====
+ImagePullBackOffエラーのため、「Customers」のPodが　_Failed状態_　となっている可能性がありますが、こちらはOpenShiftのCI/CDとGitOpsのセクションを終了後に、自動的に修正されます。
+====
 
-The problem right now is in the *customers* service:
+アプリケーションのすべてのソースコードおよびすべてのサービスのGitOps YAML Manifestは、このワークショップ向けにOpenShiftクラスタでホストされている（Git互換の） *Gitea* リポジトリに格納されています。
 
-* The customers service uses an old Java code base running on Apache Tomcat in a VM on Red Hat Virtualization. In this module you will assess and analyze this legacy Java application to learn the best way to modernize the Java code and then deploy the application to OpenShift on top of Red Hat JBoss Web Server.
-* The customers database is using an Oracle database running as a VM in Red Hat Virtualization. Because this is Oracle you can not deploy the database as a Pod on OpenShift. Instead you will lift and shift the VM to OpenShift Virtualization using the Migration Toolkit for Virtualization.
+現在の問題となっているものは、 *customers* サービスです。
 
-Once you have finished the all of the modules in this workshop, your deployment architecture will look like this:
+* 「Customers」サービスでは、Red Hat Virtualization上のVMでApache Tomcat上で動作する古いJavaコードベースを使用しています。このモジュールでは、このJavaのレガシーアプリケーションの評価、分析を行い、Javaコードのモダナイゼーションを実現するのに最も適した方法を学習し、その後、Red Hat JBoss Web Serverの上にあるOpenShiftにこのアプリケーションをデプロイします。
+* 「Customers」のデータベースは、Red Hat VirtualizationのVMとして動作するOracleデータベースを使用していますが、この場合、OpenShift上でこのデータベースをPodとしてデプロイすることはできません。その代わり、Migration Toolkit for Virtualizationを使用してこのVMを既存環境から持ち込み、OpenShift Virtualizationに移行することになります。
+
+このワークショップのすべてのモジュールを受講後、皆様のデプロイメントアーキテクチャは以下になります。
 
 image::architecture_completed.png[architecture_completed]
 
-== 1.2. Workshop Environment
+== 1.2. ワークショップで使用する環境
 
-=== 1.2.1. Confirm Your Username!
+=== 1.2.1. ユーザー名の確認
 
-Look in the box at the top of your screen. Is your username set already? If so it will look like this:
+画面上部のボックスにて、ユーザー名はすでに設定されているかご確認ください。設定されている場合、以下のように表示されます。
 
 image::alreadyset.png[alreadyset]
 
-If your `username` is properly set, then you can move on. *If not, in the above box, enter the user ID you were assigned* like this:
+`ユーザー名` が正しく設定されていることを確認後、次に進んでください。　*確認できない場合は、上記のボックスに、割り当てられたユーザーIDを以下のように入力してください*。
 
 image::setuser.png[setuser]
 
-This will customize the links and copy/paste code for this workshop. If you accidentally type the wrong username, just update your username in the URL parameters (e.g. ` 1-introduction.html?USERID=%USERID% ` )
+こちらを実施後、このワークショップのリンクとコピー/ペーストコードが設定変更されます。誤ったユーザー名を入力した場合は、URLパラメータでユーザー名を更新してください（例：`1-introduction.html?USERID=%USERID%`）
 
-[IMPORTANT]
+[重要]
 ====
-You have to use *an unique username* (e.g. `%USERID%`) while you're running the hands-on labs. For example, you need to deploy applications to your own project (e.g. retail-%USERID%).
+ハンズオンラボを受講中は、固有のユーザー名（例： `%USERID%`）を使用する必要があります。例として、自分のプロジェクト（例：retail-%USERID%）にアプリケーションをデプロイする必要があります。
 ====
 
-=== 1.2.2. OpenShift Cluster
+=== 1.2.2. OpenShiftクラスタ
 
 Your OpenShift cluster is already configured with everything you need. Here are the details:
+このワークショップのOpenShiftクラスタには、使用するものがすでに構成されています。以下はその詳細となります。
 
-* `Gitea` to host the source code repositories
-* `OpenShift Virtualization` to ultimately run the migrated Oracle VM
-* `Migration Toolkit for Virtualization` to facilitate the migration of the Oracle VM to Red Hat OpenShift Container Platform
-* `OpenShift GitOps` to manage the deployed services using a GitOps approach through ArgoCD
-* `OpenShift Pipelines` to build the customer application from source code and deploy to the `retail` project using GitOps
+* ソースコードリポジトリをホストする `Gitea` 
+* 移行したOracle VMを最終的に稼働させる `OpenShift Virtualization` 
+* Oracle VMからRed Hat OpenShift Container Platformへの移行を容易にする `Migration Toolkit for Virtualization`
+* ArgoCDによるGitOpsアプローチでデプロイされたサービスを管理する `OpenShift GitOps`
+* ソースコードからお客様のアプリケーションを構築する `OpenShift Pipelines` および `retail` プロジェクトにデプロイするGitOps
 * `Migration Toolkit for Applications` to help modernize the customer service.
+* お客様のサービスのモダナイゼーションを支援する `Migration Toolkit for Applications`
 
 === 1.2.3. Visual Studio Code Server
 
-VSCode is already deployed in the OpenShift cluster for you you to use as your IDE. This means you don't need to install and configure anything on your system. This makes it easy to change source code and configuration files in the cloned repository.
+VSCodeはOpenShiftクラスタにデプロイ済みのため、IDEとして使用可能です。そのため、システムに追加でインストールまたは設定を行う必要はありません。これにより、クローンリポジトリ内のソースコードや設定ファイルを簡単に変更できます。
 
-To get started, access the link:https://codeserver-codeserver-%USERID%.%SUBDOMAIN%[VS Code server instance^] and log in using the following `password`.
+はじめに、 link:https://codeserver-codeserver-%USERID%.%SUBDOMAIN%[VS Code server インスタンス^] にアクセスし、以下の `password` でログインしてください。
 
 * Password: `{openshift-password}`
 
 image::vscode-server-login.png[vscode-server-login]
 
-The graphical user interface (GUI) should look like:
+グラフィカルユーザーインターフェース（GUI）には、以下の特徴があります。
 
 image::vscode.png[VSCode]
 
-== 1.3. Explore the Globex Retail Services (GUI)
+== 1.3. Globex Retailのサービスの調査（GUI）
 
-Confirm you're able to access the retail services application by accessing its frontend web application. To find the URL to access the *Frontend* application, you need to use the OpenShift command line tool (`oc`). Go to the VS Code server and Open a new terminal that already installed the _oc_ command by default.
+フロントエンドのWebアプリケーションにアクセスして、Global Retailのサービスアプリケーションにアクセスできることを確認してください。*フロントエンド* アプリケーションへのアクセスURLは、OpenShiftのコマンドラインツール（oc）を使用する必要があります。VS Code Serverを開き、デフォルトで `oc` コマンドがインストールされているターミナルを新たに開いてください。
 
-Click on `New Terminal` in Terminal menu in the VS Code. Once a new terminal is open, run the following _oc_ command.
+VS Codeのターミナルメニューにある「新しいターミナル」をクリックし、新しいターミナルが開いたら、以下のocコマンドを実行してください。
 
 [.console-input]
 [source,bash]
@@ -115,12 +117,12 @@ oc login -u %USERID% -p openshift https://openshift.default.svc:443
 
 image::vscode-terminal.png[vscode-terminal]
 
-[NOTE]
+[注]
 ====
-If you see a popup message about allowing copy/paste, *"See text and images copied to the clipboard"*, click on `Allow`. Then you might also see `"Use insecure connections?"` message in the terminal. In case, press `y`.
+コピー&ペーストの許可に関する *"See text and images copied to the clipboard"* というポップアップメッセージが表示されたら、 `Allow` をクリックします。その際に、ターミナルで `"Use insecure connections?"` というメッセージも表示される可能性もありますが、その場合は、 `y` を入力してください。
 ====
 
-Find the `Route` URL for the *Frontend* application. Run the following `oc` command in the VS Code server terminal.
+*フロントエンド* アプリケーションの `Route` URLを検索するため、VS Code Serverのターミナルで、以下のocコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -128,7 +130,7 @@ Find the `Route` URL for the *Frontend* application. Run the following `oc` comm
 oc get route ordersfrontend -n retail-%USERID%
 ----
 
-The output should look like:
+以下は出力内容の一例です。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -137,23 +139,23 @@ NAME             HOST/PORT                                                      
 ordersfrontend   ordersfrontend-retail-%USERID%.%SUBDOMAIN%          ordersfrontend   web    edge/Redirect   None
 ----
 
-Navigate to the orders frontend route by entering the hostname listed above under `HOST/PORT` into your browser's address bar.
+ブラウザのアドレスバーに `HOST/PORT` に上記のホスト名を入力し、オーダーに対してのフロントエンドルートに移動します。
 
 image::frontend.png[Frontend]
 
-Click through the three panels on the left.
+左側の3つのパネルをクリックしてください。
 
-* `Customers` shows the list of the customer information such as _fullname, city, country, and username_.
-* `Orders` shows current order information including relevant customer data.
-* `Products` shows the current inventory information.
+* `Customers` には、 _フルネーム、都市名、国名、ユーザー名_ などの顧客情報の一覧が表示されます。
+* `Orders` には、関連する顧客データを含む現在のオーダー情報が表示されます。
+* `Products` には、現在の在庫情報が表示されます。
 
-== 1.4. Access the Customer Data
+== 1.4. お客様データへのアクセス
 
-The RHV environment not only has the Oracle Database VM deployed but it also hosts another VM which runs the old customer application on top of Apache Tomcat.
+RHV環境にはOracle Database VMがデプロイされているだけでなく、Apache Tomcat上で、お客様の古いアプリケーションを実行する別のVMもホスティングされています。
 
-From a terminal window you can use `curl` to demonstrate that the application is connected to the database.
+ターミナルウィンドウから `curl` コマンドを実行し、アプリケーションがデータベースに接続されているかどうか確認できます。
 
-Use the IP Address of the *Customer Service (Tomcat VM)* to access the customer service. Run the following _curl_ command in the VS Code server's terminal {or your local environment since the Tomcat IP address is publicly accessible).
+*Customer Service (Tomcat VM)* のIPアドレスを使用して、「Customers」サービスにアクセスしてください。アクセスするには、VS Code Serverのターミナル（もしくはTomcatの公開されているIPアドレスを用いてローカル環境）で、以下の _curl_ コマンドを実行します。
 
 [.console-input]
 [source,bash]
@@ -161,7 +163,7 @@ Use the IP Address of the *Customer Service (Tomcat VM)* to access the customer 
 curl http://%TOMCATIP%:8080/customers-tomcat-0.0.1-SNAPSHOT/customers/1 ; echo
 ----
 
-The output should look like:
+以下は出力内容の一例です。
 
 [.console-output]
 [source,json]
@@ -169,7 +171,7 @@ The output should look like:
 {"id":1,"username":"phlegm_master_19","name":"Guybrush","surname":"Threepwood","address":"1060 West Addison","zipCode":"ME-001","city":"Melee Town","country":"Melee Island"}
 ----
 
-Try to get another customer data.
+別のお客様データを取得してください。
 
 [.console-input]
 [source,bash]
@@ -177,7 +179,7 @@ Try to get another customer data.
 curl http://%TOMCATIP%:8080/customers-tomcat-0.0.1-SNAPSHOT/customers/2 ; echo
 ----
 
-The output should look like:
+以下は出力内容の一例です。
 
 [.console-output]
 [source,json]
@@ -185,8 +187,8 @@ The output should look like:
 {"id":2,"username":"hate_guybrush","name":"Pirate","surname":"Lechuck","address":"Caverns of Meat, no number","zipCode":"MO-666","city":"Giant Monkey Head","country":"Monkey Island"}
 ----
 
-== Congratulations!
+== おめでとうございます。
 
-You have now successfully learned about the architecture of the application and confirmed your workshop environment.
+以上で、アプリケーションのアーキテクチャの学習、ワークショップの環境の確認が完了しました。
 
-In the next step, you'll continue the modernization process by analyzing the source code of one of the applications and refactor it to run as a Linux container on OpenShift.
+次のステップでは、アプリケーションの1つのソースコードを分析し、OpenShift上のLinuxコンテナとして動作するようにリファクタリングを行い、モダナイゼーションプロセスの続きを実施していきます。
