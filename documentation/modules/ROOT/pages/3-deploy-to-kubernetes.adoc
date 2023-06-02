@@ -1,20 +1,20 @@
-= 3. Deploy to Kubernetes - 10 minutes
+= 3. Kubernetesへのデプロイ – 10分
 :imagesdir: ../assets/images
 
-== Goals of this lab
+== 本演習の目標
 
-The goal of this exercise is to build and deploy the modernized customer application to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^].
+本演習の目標は、 link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]　を使用して、モダナイゼーシされたお客様のアプリケーションを OpenShiftに構築およびデプロイすることです。
 
-You will:
+本演習では、以下を実施します。
 
-* Use the OpenShift binary build strategy to build and deploy the new, modernized application using Red Hat JBoss Web Server instead of Apache Tomcat as the runtime.
-* Test the new *customers* service
+* OpenShift のバイナリビルドストラテジーを使用して、Apache Tomcatの代わりに、ランタイムとしてRed Hat JBoss Web Serverを使用し、新しくモダナイゼーションされたアプリケーションの構築およびデプロイの実施。
+* 「New  *Customers* 」のテスト
 
-== 3.1. Create a new project
+== 3.1. 新規プロジェクトの作成
 
-[IMPORTANT]
+[重要]
 ====
-In case you haven't already logged in to the OpenShift cluster, run the following `oc` command in VS Code server terminal.
+OpenShiftクラスタにログインしていない場合、VS Codeサーバのターミナルで以下の `oc` コマンドを実行してください。
 
 [.console-input]
 [source,bash]
@@ -24,6 +24,7 @@ oc login -u %USERID% -p openshift https://openshift.default.svc:443
 ====
 
 Create a new project in the OpenShift cluster to deploy our newly-modernized application, *customers*. Run the following command in the terminal.
+OpenShiftクラスタに新しいプロジェクトを作成し、新たにモダナイゼーションされたアプリケーションである *customers* デプロイします。ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -31,9 +32,9 @@ Create a new project in the OpenShift cluster to deploy our newly-modernized app
 oc new-project customers-qa-%USERID%
 ----
 
-== 3.2. Prepare the directory structure
+== 3.2. ディレクトリ構造の準備
 
-Create a directory for the binary build on your local file system and the `deployments/` subdirectory. Copy the WAR archive to `deployments/` directory by running the following commands in the terminal:
+ローカルファイルシステム上にバイナリビルド用のディレクトリを作成し、 `deployments/` サブディレクトリを作成してください。作成後、ターミナルで以下のコマンドを実行し、WARアーカイブファイルを `deployments/` ディレクトリにコピーします。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -45,9 +46,9 @@ mkdir -p ocp/deployments
 cp target/customers-tomcat-0.0.1-SNAPSHOT.war ocp/deployments/
 ----
 
-[IMPORTANT]
+[重要]
 ====
-Compile the `customers-tomcat-legacy` project using the following maven command:
+以下のmavenコマンドで、「customers-tomcat-legacy」プロジェクトをコンパイルします。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -56,9 +57,9 @@ mvn clean package
 ----
 ====
 
-== 3.3. Build the application container image
+== 3.3. アプリケーションコンテナイメージの構築
 
-Create a new build configuration, specifying image stream and application name. Run the following command in the terminal to do this:
+イメージストリームおよびアプリケーション名を指定し、新しいビルド構成を作成します。ビルド構成を作成するため、ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -68,7 +69,7 @@ oc new-build --binary=true \
  --name=customers
 ----
 
-The output should look like this.
+以下出力内容の一例です。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -91,11 +92,11 @@ The output should look like this.
 --> Success
 ----
 
-== 3.4. Start the binary build
+== 3.4. バイナリビルドの開始
 
-Start the binary build based on that build configuration just created. Instruct OpenShift to use the `ocp` directory you created for the binary input for the image build.
+先ほど作成したビルド構成に基づき、バイナリビルドを開始します。イメージビルドのバイナリ入力用に作成した `ocp` ディレクトリを使用するよう、OpenShiftで設定してください。
 
-Run the following command in the terminal to start the build:
+設定後、ターミナルで以下のコマンドを実行し、ビルドを開始してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -103,7 +104,7 @@ Run the following command in the terminal to start the build:
 oc start-build customers --from-dir=./ocp --follow
 ----
 
-The output should end up with this.
+以下は出力内容の一例です。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -123,9 +124,9 @@ Successfully pushed image-registry.openshift-image-registry.svc:5000/customers-q
 Push successful
 ----
 
-== 3.5. Create a new OpenShift application
+== 3.5. 新しいOpenShiftアプリケーションの作成
 
-Create a new OpenShift application based on the newly-built container image. Run the following command in the terminal.
+新たに構築したコンテナイメージに基づいて、新しい OpenShiftアプリケーションを作成します。アプリケーション作成のため、ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -133,7 +134,7 @@ Create a new OpenShift application based on the newly-built container image. Run
 oc new-app customers
 ----
 
-The output should look like this.
+以下は出力内容の一例です。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -156,7 +157,7 @@ The output should look like this.
     Run 'oc status' to view your app.
 ----
 
-You can add the following label to show the application running on the JBoss Web Server. Run the following command in the terminal.
+以下のラベルを追加すると、JBoss Web Server で実行されているアプリケーションが表示できます。追加するには、ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -164,13 +165,13 @@ You can add the following label to show the application running on the JBoss Web
 oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 ----
 
-== 3.6. Verify the new customers application
+== 3.6. 「New Customers」アプリケーションの確認
 
-`Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
+`おめでとうございます` 。OpenShiftクラスタに「New Customers」アプリケーションのデプロイに成功しました。このアプリケーションが「customers-qa-%USERID%」プロジェクトで実行されている場合は、 link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] にアクセスしてください。
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-Access the following RESTful API of the customers application to retrieve the customer data in the new Oracle database on OpenShift virtualization.
+OpenShift virtualization上の新しいOracleデータベースのお客様データを取得のため、「Customers」アプリケーションにおける、以下のRESTful APIにアクセスしてください。
 
 [.console-input]
 [source,bash]
@@ -178,7 +179,7 @@ Access the following RESTful API of the customers application to retrieve the cu
 curl http://customers.customers-qa-%USERID%.svc.cluster.local:8080/customers-tomcat-0.0.1-SNAPSHOT/customers/1 ; echo
 ----
 
-The output should look like this.
+以下は出力内容の一例です。
 
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
@@ -186,8 +187,8 @@ The output should look like this.
 {"id":1,"username":"phlegm_master_19","name":"Guybrush","surname":"Threepwood","address":"1060 West Addison","zipCode":"ME-001","city":"Melee Town","country":"Melee Island"}
 ----
 
-This shows that the newly-modernized application running on OpenShift can successfully retrieve customer data from the backend database.
+この出力内容から、OpenShift上で動作する最新のアプリケーションが、バックエンドデータベースからお客様データを正常に取得できていることが分かります。
 
-== Summary
+== まとめ
 
-Congratulations! You have now successfully remediated all the migration issues you have found and refactored the legacy application. In the next module, you'll learn how to implement `CI/CD` and `GitOps` for advanced application management on your Red Hat OpenShift cluster.
+おめでとうございます。以上で、発見したマイグレーションに関するすべての問題を解決し、レガシーアプリケーションのリファクタリングが完了しました。次のモジュールでは、Red Hat OpenShiftクラスタにおいて、高度なアプリケーション管理を行うための `CI/CD` および `GitOps` の実装方法について学習します。
