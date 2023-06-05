@@ -140,7 +140,7 @@ In the meantime, the Globex retails system's *SRE team* has already migrated the
 The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^]. This is an add-on to OpenShift Container Platform, enabling you to run and manage virtual machine workloads alongside container workloads.
 ====
 
-Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of reatail-%USERID% project in the Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of retail-%USERID% project in the Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
