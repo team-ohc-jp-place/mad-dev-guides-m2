@@ -240,7 +240,7 @@ image::add-new-applications.png[Add new applications]
 image::upload-success.png[upload-success]
 ====
 
-アップロードの正常完了後、変換対象のオプションが表示されます。先ほどと同様にアプリケーション分析のパラメータとして`Containers`, `Linux`, `OpenJDK`　を選択してください。
+アップロードの正常完了後、変換対象のオプションが表示されます。先ほどと同様にアプリケーション分析のパラメータとして　 `Containers`, `Linux`, `OpenJDK`　を選択してください。
 
 image::configure-analysis-checked.png[Configure Analysis]
 
