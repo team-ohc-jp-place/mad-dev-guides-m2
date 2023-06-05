@@ -231,7 +231,7 @@ Giteaリポジトリには、以下の認証情報でログインしてくださ
 
 image::add-new-applications.png[Add new applications]
 
-実施後、 `Next`をクリックしてください。
+実施後、 `Next` をクリックしてください。
 
 [NOTE]
 ====
