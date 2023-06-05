@@ -244,29 +244,29 @@ image::upload-success.png[upload-success]
 
 image::configure-analysis-checked.png[Configure Analysis]
 
-選択後、 `Next`　をクリックしてください。
+選択後、 `Next` をクリックしてください。
 
 依存関係の範囲に　`Application and internal dependencies only`　 for the scope of dependencies.」を選択します。
 
 image::packages.png[Select packages]
 
-選択後、 `Next`をクリックしてください。
+選択後、 `Next` をクリックしてください。
 
 依存関係の範囲を選択後、カスタムルールのオプションが表示されます。
 
 image::custom-rules.png[Custom rules]
 
-`Add Rule`　をクリックして、ファイルシステムにダウンロード済みの *customrules* ディレクトリにあるカスタムルール（`corporate-framework-config.windup.xml`）をアップロードしてください。
+`Add Rule` をクリックして、ファイルシステムにダウンロード済みの *customrules* ディレクトリにあるカスタムルール（`corporate-framework-config.windup.xml`）をアップロードしてください。
 
 ファイルをドラッグ＆ドロップするか、ローカルファイルシステムからアップロードしてください。
 
 image::upload-custom-rule.png[upload-custom-rule]
 
-アップロード後、　`Add`　をクリックしてください。クリック後、カスタムルールが追加されていることを確認してください。確認後、　`Next`　をクリックします。
+アップロード後、　`Add` をクリックしてください。クリック後、カスタムルールが追加されていることを確認してください。確認後、 `Next` をクリックします。
 
 image::enable-custom-rule.png[enable-custom-rule]
 
-次に、デフォルト値で実施するため、　`Advanced options`　にて　`Next`　をクリックします、
+次に、デフォルト値で実施するため、 `Advanced options` にて `Next` をクリックします、
 
 image::fine-tune.png[Fine tuning]
 
@@ -274,11 +274,11 @@ image::fine-tune.png[Fine tuning]
 
 image::finish-project.png[Finish project]
 
-`Run`　をクリックしてください。
+`Run` をクリックしてください。
 
 分析処理が始まり、完了後に分析レポートにアクセスできるようになります。分析処理が完了するまで、お待ちください。
 
-分析処理の完了後、左のキャレットから「Customers」アプリケーションを展開します。その後、　`Report`　をクリックしてください。
+分析処理の完了後、左のキャレットから「Customers」アプリケーションを展開します。その後、 `Report` をクリックしてください。
 
 [NOTE]
 ====
@@ -287,10 +287,10 @@ Windup用のコンテナイメージのダウンロードおよびアプリケ�
 
 image::new-active-analysis.png[Active analysis]
 
-「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成してください。レポートの生成後、レポート内にて、ストーリーポイントが　`0`　になったことを確認してください。
+「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成してください。レポートの生成後、レポート内にて、ストーリーポイントが `0` になったことを確認してください。
 
 ## おめでとうございます!
 
-以上で、対象のアプリケーションのマイグレーションが成功し、OpenShiftへのデプロイに向けて準備が整いました。　＊お疲れさまでした。＊　
+以上で、対象のアプリケーションのマイグレーションが成功し、OpenShiftへのデプロイに向けて準備が整いました。 ＊お疲れさまでした。＊ 
 
 image::new-report-solution-view.png[New view report]
