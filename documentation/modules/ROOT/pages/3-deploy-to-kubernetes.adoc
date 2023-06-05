@@ -3,16 +3,16 @@
 
 == 本演習の目標
 
-本演習の目標は、 link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]　を使用して、モダナイゼーシされたお客様のアプリケーションを OpenShiftに構築およびデプロイすることです。
+本演習の目標は、 link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^] を使用して、モダナイゼーシされたお客様のアプリケーションを OpenShiftに構築およびデプロイすることです。
 
 本演習では、以下を実施します。
 
 * OpenShift のバイナリビルドストラテジーを使用して、Apache Tomcatの代わりに、ランタイムとしてRed Hat JBoss Web Serverを使用し、新しくモダナイゼーションされたアプリケーションの構築およびデプロイの実施。
-* 「New  *Customers* 」のテスト
+* 「New *Customers* 」のテスト
 
 == 3.1. 新規プロジェクトの作成
 
-[重要]
+[IMPORTANT]
 ====
 OpenShiftクラスタにログインしていない場合、VS Codeサーバのターミナルで以下の `oc` コマンドを実行してください。
 
@@ -23,7 +23,7 @@ oc login -u %USERID% -p openshift https://openshift.default.svc:443
 ----
 ====
 
-Create a new project in the OpenShift cluster to deploy our newly-modernized application, *customers*. Run the following command in the terminal.
+Create a new project in the OpenShift cluster to deploy our newly-modernized application, *customers* . Run the following command in the terminal.
 OpenShiftクラスタに新しいプロジェクトを作成し、新たにモダナイゼーションされたアプリケーションである *customers* デプロイします。ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
@@ -46,7 +46,7 @@ mkdir -p ocp/deployments
 cp target/customers-tomcat-0.0.1-SNAPSHOT.war ocp/deployments/
 ----
 
-[重要]
+[IMPORTANT]
 ====
 以下のmavenコマンドで、「customers-tomcat-legacy」プロジェクトをコンパイルします。
 
