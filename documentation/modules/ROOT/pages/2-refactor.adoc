@@ -3,8 +3,7 @@
 
 == 本演習の目標
 
-The goal of this lab is to understand the modernization issues related to the `customers` application that you found in the previous exercise and learn how you can resolve them by code modification. The MTA Analysis report also provides the details in terms of the *file name*, *path*, and *solution recommendations* for each issue.
-本演習の目標は、前回の演習で確認した `customers` アプリケーションに関するモダナイゼーションの問題を理解し、コードの修正による対応を確認することです。MTA Analysisのレポートには、 *各問題のファイル名*、*パス*、*解決策の推奨事項* などの詳細情報も記載されています。
+本演習の目標は、前回の演習で確認した `customers` アプリケーションに関するモダナイゼーションの問題を理解し、コードの修正による対応を確認することです。MTA Analysisのレポートには、 *各問題のファイル名*、 *パス*、 *解決策の推奨事項* などの詳細情報も記載されています。
 
 本演習の最後に、再度MTA分析にて「Customers」アプリケーションを分析し、各問題が正常に修正されたか確認します。
 
@@ -39,7 +38,6 @@ image::applicationConfiguration-class.png[applicationConfiguration-class]
 
 === 2.2.2. DataSourceメソッドの更新
 
-Then, inject an instance of the `Environment` class using the Spring `@Autowired` annotation to refer to the local application configuration. Add the following class variable to the _PersistenceConfig_ class.
 続いて、Springの `@Autowired` アノテーションを使用して、 `Environment` クラスのインスタンスをインジェクションし、ローカルアプリケーション構成を参照します。 _PersistenceConfig_ クラスに以下のクラス変数を追加してください。
 
 [.console-input]
@@ -117,7 +115,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 === 2.2.5. Corporate ライブラリの削除
 
-With these changes, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment out the dependency in your Maven project.
 今回の変更で、外部のcorporateライブラリーを参照する必要がなくなったため、Mavenプロジェクトで依存関係を削除もしくは、コメントアウトします。
 
 `pom.xml`　を開き、以下の　`config-utils`　の依存関係をコメントアウト（または削除）してください。
@@ -216,10 +213,8 @@ image::mta-new-app.png[mta-new-app]
 
 image::mta-search-new-customers.png[mta-search-new-customers]
 
-[注]
+[NOTE]
 ====
-Normally you would commit the code change, rebuild the application, and use that to analyse. To save time, you can find the already-modernized application (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^]. You can use this instead of walking through multiple steps from _commit_ to _push_, and _pull_, and _build_ the new application artifact (_.war_ file) in your local file system.
-
 通常は、コードの変更をコミットしてアプリケーションを再構築し、再構築したアプリケーションにて分析を行います。しかし、この分析を早く行うために、固定コードと一緒にパッケージ化されていて且つ、既にモダナイゼーションされたアプリケーション（`customers-tomcat-solution.war`）が link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea リポジトリ^]にあります。 _コミット_ から _プッシュ_ 、 _プル_ までの複数のステップを実施する代わりにこちらを使用し、新しいアプリケーションのアーティファクト（_.war_ ファイル）をローカルファイルシステムに _ビルド_ 可能です。
 
 image::gitea-repo.png[gitea-repo]
@@ -238,7 +233,7 @@ image::add-new-applications.png[Add new applications]
 
 実施後、 `Next`をクリックしてください。
 
-[注意]
+[NOTE]
 ====
 アップロード完了後、画面右上に、以下の成功ポップアップメッセージが表示されたかご確認ください。バイナリファイルのアップロード完了には、数秒かかります。
 
@@ -286,7 +281,7 @@ image::finish-project.png[Finish project]
 
 分析処理の完了後、左のキャレットから「Customers」アプリケーションを展開します。その後、　`Report`　をクリックしてください。
 
-[注]
+[NOTE]
 ====
 Windup用のコンテナイメージのダウンロードおよびアプリケーション分析のため、処理に数分かかる場合があります。
 ====
