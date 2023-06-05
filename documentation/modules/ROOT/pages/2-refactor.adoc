@@ -291,6 +291,6 @@ image::new-active-analysis.png[Active analysis]
 
 ## おめでとうございます!
 
-以上で、対象のアプリケーションのマイグレーションが成功し、OpenShiftへのデプロイに向けて準備が整いました。 ＊お疲れさまでした。＊ 
+以上で、対象のアプリケーションのマイグレーションが成功し、OpenShiftへのデプロイに向けて準備が整いました。 *お疲れさまでした。* 
 
 image::new-report-solution-view.png[New view report]
