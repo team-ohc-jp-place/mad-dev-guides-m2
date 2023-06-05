@@ -23,7 +23,6 @@ oc login -u %USERID% -p openshift https://openshift.default.svc:443
 ----
 ====
 
-Create a new project in the OpenShift cluster to deploy our newly-modernized application, *customers* . Run the following command in the terminal.
 OpenShiftクラスタに新しいプロジェクトを作成し、新たにモダナイゼーションされたアプリケーションである *customers* デプロイします。ターミナルで以下のコマンドを実行してください。
 
 [.console-input]
