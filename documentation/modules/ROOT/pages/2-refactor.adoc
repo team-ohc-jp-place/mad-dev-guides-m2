@@ -246,7 +246,7 @@ image::configure-analysis-checked.png[Configure Analysis]
 
 選択後、 `Next` をクリックしてください。
 
-依存関係の範囲に　`Application and internal dependencies only`　 for the scope of dependencies.」を選択します。
+依存関係の範囲に `Application and internal dependencies only` を選択します。
 
 image::packages.png[Select packages]
 
@@ -266,7 +266,7 @@ image::upload-custom-rule.png[upload-custom-rule]
 
 image::enable-custom-rule.png[enable-custom-rule]
 
-次に、デフォルト値で実施するため、 `Advanced options` にて `Next` をクリックします、
+次に、デフォルト値で実施するため、 `Advanced options` にて `Next` をクリックします。
 
 image::fine-tune.png[Fine tuning]
 
