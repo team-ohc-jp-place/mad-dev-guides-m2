@@ -18,7 +18,7 @@ ordermanagement/config* ディレクトリにある `PersistenceConfig.java` フ
 
 image::persistence-class.png[persistence-class]
 
- `dataSource()` メソッドでは、 _driverClassName_ 、 _url_ 、_user_ 、 _password_ などのJDBC変数を設定するための `ApplicationConfiguration` インスタンスが作成されています。このファイルを確認すると、「ApplicationConfiguration」には、 `persistence.properties` にハードコーディングされたIPアドレスを参照している箇所があることが分かります。
+`dataSource()` メソッドでは、 _driverClassName_ 、 _url_ 、_user_ 、 _password_ などのJDBC変数を設定するための `ApplicationConfiguration` インスタンスが作成されています。このファイルを確認すると、「ApplicationConfiguration」には、 `persistence.properties` にハードコーディングされたIPアドレスを参照している箇所があることが分かります。
 
 image::applicationConfiguration-class.png[applicationConfiguration-class]
 
