@@ -240,7 +240,6 @@ image::add-new-applications.png[Add new applications]
 image::upload-success.png[upload-success]
 ====
 
-You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis just as before.
 アップロードの正常完了後、変換対象のオプションが表示されます。先ほどと同様にアプリケーション分析のパラメータとして`Containers`, `Linux`, `OpenJDK`　を選択してください。
 
 image::configure-analysis-checked.png[Configure Analysis]
