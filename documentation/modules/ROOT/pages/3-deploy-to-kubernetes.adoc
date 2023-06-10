@@ -33,7 +33,8 @@ oc new-project customers-qa-%USERID%
 
 == 3.2. ディレクトリ構造の準備
 
-ローカルファイルシステム上にバイナリビルド用のディレクトリを作成し、 `deployments/` サブディレクトリを作成してください。作成後、ターミナルで以下のコマンドを実行し、WARアーカイブファイルを `deployments/` ディレクトリにコピーします。
+ローカルファイルシステム上にバイナリビルド用のディレクトリおよび `deployments/` サブディレクトリを作成し、作成後、WARアーカイブファイルを `deployments/` ディレクトリにコピーします。
+VS Codeのターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
