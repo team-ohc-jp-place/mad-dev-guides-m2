@@ -78,7 +78,6 @@ image::setuser.png[setuser]
 
 === 1.2.2. OpenShiftクラスタ
 
-Your OpenShift cluster is already configured with everything you need. Here are the details:
 このワークショップのOpenShiftクラスタには、使用するものがすでに構成されています。以下はその詳細となります。
 
 * ソースコードリポジトリをホストする `Gitea` 
@@ -86,7 +85,6 @@ Your OpenShift cluster is already configured with everything you need. Here are 
 * Oracle VMからRed Hat OpenShift Container Platformへの移行を容易にする `Migration Toolkit for Virtualization`
 * ArgoCDによるGitOpsアプローチでデプロイされたサービスを管理する `OpenShift GitOps`
 * ソースコードからお客様のアプリケーションを構築する `OpenShift Pipelines` および `retail` プロジェクトにデプロイするGitOps
-* `Migration Toolkit for Applications` to help modernize the customer service.
 * お客様のサービスのモダナイゼーションを支援する `Migration Toolkit for Applications`
 
 === 1.2.3. Visual Studio Code Server
