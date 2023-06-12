@@ -37,7 +37,7 @@ image::applicationConfiguration-class.png[applicationConfiguration-class]
 
 === 2.2.2. DataSourceメソッドの更新
 
-続いて、Springの `@Autowired` アノテーションを使用して、 `Environment` クラスのインスタンスをインジェクションし、ローカルアプリケーション構成を参照します。 _PersistenceConfig_ クラスに以下のクラス変数を追加してください。
+続いて、Springの `@Autowired` アノテーションを使用して、 `Environment` クラスのインスタンスをインジェクションし、ローカルアプリケーション構成を参照します。 _PersistenceConfig_ クラスに以下のインスタンス変数を追加してください。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
