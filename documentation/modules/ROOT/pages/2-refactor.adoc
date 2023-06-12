@@ -27,7 +27,7 @@ image::applicationConfiguration-class.png[applicationConfiguration-class]
 
 === 2.2.1. Spring PropertySourceアノテーションの追加
 
-`PersistenceConfig` のpublic classの上に、以下のアノテーションを追加してください。
+パブリックな `PersistenceConfig` クラスに以下のアノテーションを追加してください。
 
 [.console-input]
 [source,java,subs="+attributes,macros+"]
