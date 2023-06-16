@@ -45,17 +45,6 @@ mkdir -p ocp/deployments
 cp target/customers-tomcat-0.0.1-SNAPSHOT.war ocp/deployments/
 ----
 
-[IMPORTANT]
-====
-Compile the `customers-tomcat-legacy` project using the following maven command:
-
-[.console-input]
-[source,bash,subs="+attributes,macros+"]
-----
-mvn clean package
-----
-====
-
 == 3.3. Build the application container image
 
 Create a new build configuration, specifying image stream and application name. Run the following command in the terminal to do this:
