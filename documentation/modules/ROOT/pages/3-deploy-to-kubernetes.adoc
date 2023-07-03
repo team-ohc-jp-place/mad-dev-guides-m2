@@ -53,7 +53,7 @@ Create a new build configuration, specifying image stream and application name. 
 [source,bash,subs="+attributes,macros+"]
 ----
 oc new-build --binary=true \
- --image-stream=jboss-webserver56-openjdk11-tomcat9-openshift-ubi8:latest \
+ --image-stream=jboss-webserver57-openjdk11-tomcat9-openshift-ubi8:latest \
  --name=customers
 ----
 
@@ -62,11 +62,11 @@ The output should look like this.
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
 ----
---> Found image dbaf036 (8 weeks old) in image stream "openshift/jboss-webserver56-openjdk11-tomcat9-openshift-ubi8" under tag "latest" for "jboss-webserver56-openjdk11-tomcat9-openshift-ubi8:latest"
+--> Found image de5b7ae (5 weeks old) in image stream "openshift/jboss-webserver57-openjdk11-tomcat9-openshift-ubi8" under tag "latest" for "jboss-webserver57-openjdk11-tomcat9-openshift-ubi8:latest"
 
-    JBoss Web Server 5.6 OpenJDK11
-    ------------------------------
-    Platform for building and running web applications on JBoss Web Server 5.6 with OpenJDK11 - Tomcat v9
+    JBoss Web Server 5.7 OpenJDK11 
+    ------------------------------ 
+    Platform for building and running web applications on JBoss Web Server 5.7 with OpenJDK11 - Tomcat v9
 
     Tags: builder, java, tomcat9
 
@@ -127,11 +127,11 @@ The output should look like this.
 [.console-output]
 [source,bash,subs="+attributes,macros+"]
 ----
---> Found image 10491ac (3 minutes old) in image stream "customers-qa-%USERID%/customers" under tag "latest" for "customers"
+--> Found image 50f873a (15 seconds old) in image stream "customers-qa-user1/customers" under tag "latest" for "customers"
 
-    JBoss Web Server 5.6 OpenJDK11
-    ------------------------------
-    Platform for building and running web applications on JBoss Web Server 5.6 with OpenJDK11 - Tomcat v9
+    JBoss Web Server 5.7 OpenJDK11 
+    ------------------------------ 
+    Platform for building and running web applications on JBoss Web Server 5.7 with OpenJDK11 - Tomcat v9
 
     Tags: builder, java, tomcat9
 
@@ -141,7 +141,7 @@ The output should look like this.
     service "customers" created
 --> Success
     Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
-     'oc expose service/customers'
+     'oc expose service/customers' 
     Run 'oc status' to view your app.
 ----
 

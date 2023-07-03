@@ -186,12 +186,43 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  3.048 s
-[INFO] Finished at: 2022-08-12T21:48:47Z
+[INFO] Total time:  9.884 s
+[INFO] Finished at: 2023-06-30T22:01:49Z
 [INFO] ------------------------------------------------------------------------
 ----
 
-=== 2.2.8. Re-run MTA Analysis
+=== 2.2.8. Commit and Push Changes
+
+Before you analyzing the MTA report, you need to commit and push changes to Gitea repository. Go back to VS Code and select `Source Control` menu on the left.
+
+You will see 3 changes:
+
+* pom.xml
+* PersistenceConfig.java
+* persistence.properties
+
+Type `Fix migration issus` in the comment. Select `Commit`.
+
+image::code-commit.png[code-commit]
+
+Select `Yes`.
+
+image::code-commit-yes.png[code-commit]
+
+Select `Sync Changes`.
+
+image::sync-changes.png[sync-changes]
+
+[NOTE]
+====
+You might see *Would you like code-server to periodically run "git fetch"?* popup message on the right bottom. Then, you can ignore it.
+====
+
+If you go back to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^], you will see the commit.
+
+image::gitea-commit.png[gitea-commit]
+
+=== 2.2.9. Re-run MTA Analysis
 
 Go back to the link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^] and create a new inventory element to analyze the modernized application (*customers*).
 
@@ -206,6 +237,12 @@ Fill in the following fields, and click `Create`:
 * Business service: `Retail`
 * Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
 
+* Source code:
+** Repository type - `Git`
+** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+** Branch - `main`
+** Root path - `customers-tomcat-legacy`
+
 image::mta-new-app.png[mta-new-app]
 
 Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
@@ -214,30 +251,21 @@ image::mta-search-new-customers.png[mta-search-new-customers]
 
 [NOTE]
 ====
-Normally you would commit the code change, rebuild the application, and use that to analyse. To save time, you can find the already-modernized application (`customers-tomcat-solution.war`) that is packaged with the fixed code in your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^]. You can use this instead of walking through multiple steps from _commit_ to _push_, and _pull_, and _build_ the new application artifact (_.war_ file) in your local file system.
+In case you run the MTA report for the first time (e.g., you skipped module 1), go to the *Administration* view, select *Repositories > Git*. `Toggle` the *Consume insecure Git repositories* switch to the right.
 
-image::gitea-repo.png[gitea-repo]
+image::mta-admin-git.png[admin git]
 
-You can log in to the Gitea repository with the following credentials.
+You can also log in to the Gitea repository with the following credentials.
 
 * Username - `%USERID%`
-* Password - `openshift`
+* Password - `{openshift-password}`
 ====
 
-Once you download or clone the project to your local file system, explore if the `customers-tomcat-solution.war` file exists in the *packages-mta* folder.
+Select `Source dode` in Analysis mode popup.
 
-Select `Upload local binary` in Analysis mode popup. Then, drag and drop the *customers-tomcat-solution.war* file or Upload it from your local file system.
-
-image::add-new-applications.png[Add new applications]
+image::add-applications.png[Add applications]
 
 Click on `Next`.
-
-[NOTE]
-====
-Please make sure to see following success popup message on at the upper right. It probably will take a few seconds to complete the uploading of the binary file.
-
-image::upload-success.png[upload-success]
-====
 
 You will now be presented with options for transformation targets. Click on `Containers`, `Linux`, and `OpenJDK` as parameters for the application analysis just as before.
 
@@ -255,15 +283,19 @@ You will now be presented with options for custom rules.
 
 image::custom-rules.png[Custom rules]
 
-Click on `Add Rule` to upload a custom rule (`corporate-framework-config.windup.xml`) in the *customrules* directory that you have already downloaded in your file system.
+Select `Repository` tab to refer to a custom rule (`corporate-framework-config.windup.xml`) in the *customrules* directory of your Gitea repository.
 
-Drag and drop the file or upload it from your local file system.
+Key in the following information in the repository page.
 
-image::upload-custom-rule.png[upload-custom-rule]
+* Repository type - `Git`
+* Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+* Branch - `main`
+* Root path - `customrules`
+* Associated credentials - `None`
 
-Click on `Add`. Make sure if the custom rule is added. Click on `Next`.
+image::add-repository-customrules.png[add-repository-customrules]
 
-image::enable-custom-rule.png[enable-custom-rule]
+Click on `Next`.
 
 Next, click on `Next` in `Advanced options` to stick with the default options.
 
@@ -277,14 +309,16 @@ Click on `Run`.
 
 Now the new analysis will start, and once it is finished you will be able to access the reports. Stay on this view until the analysis is finished.
 
-Expand the customers application using the caret on the left. Then click on `Report`.
-
 [NOTE]
 ====
 The analysis will take a few minutes to pull the Windup image and execute the application analysis.
 ====
 
 image::new-active-analysis.png[Active analysis]
+
+Select *Customers* application. Then click on `Report` in the *Reports* tab on the right.
+
+image::new-active-analysis-report.png[Active analysis]
 
 Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that it now reports `0` Story Points.
 
