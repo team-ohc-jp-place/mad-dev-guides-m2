@@ -140,7 +140,7 @@ image::comment-dep.png[comment-dep]
 link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] は、VMware vSphereやRed Hat Virtualizationから link:https://kubevirt.io[KubeVirt^] ベースのOpenShift Virtualizationへ仮想マシンのマイグレーションを行うことができます。OpenShift Container Platformのアドオンで、コンテナワークロードと並行して仮想マシンのワークロードの実行および管理が可能となります。
 ====
 
-「Developer」パースペクティブで「reatail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `Oracleデータベース` の仮想マシンが表示されています。
+「Developer」パースペクティブで「retail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `Oracleデータベース` の仮想マシンが表示されています。
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
@@ -186,12 +186,43 @@ mvn clean package
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  3.048 s
-[INFO] Finished at: 2022-08-12T21:48:47Z
+[INFO] Total time:  9.884 s
+[INFO] Finished at: 2023-06-30T22:01:49Z
 [INFO] ------------------------------------------------------------------------
 ----
 
-=== 2.2.8. MTA Analysisの再実行
+=== 2.2.8. 変更のコミットとプッシュ
+
+MTAレポートを分析する前に、変更をコミットしてGiteaリポジトリにプッシュする必要があります。 VS Codeに戻り、左側の `Source Control` メニューを選択します。
+
+3つの変更が表示されます。
+
+* pom.xml
+* PersistenceConfig.java
+* persistence.properties
+
+コメントに `Fix migration issus` と入力し、 `Commit` 選択します。
+
+image::code-commit.png[code-commit]
+
+ `Yes` を選択します。
+
+image::code-commit-yes.png[code-commit]
+
+ `Sync Changes`　を選択します。
+
+image::sync-changes.png[sync-changes]
+
+[NOTE]
+====
+画面右下に *Would you like code-server to periodically run "git fetch"?* というポップアップメッセージが表示される場合がありますが、無視して問題ありません。
+====
+
+ link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] に戻ると、コミットした内容が表示されます。
+
+image::gitea-commit.png[gitea-commit]
+
+=== 2.2.9. MTA Analysisの再実行
 
 モダナイゼーションされたアプリケーション（*customers*）を分析するため、 link:https://mta-mta-%USERID%.%SUBDOMAIN%/applications/analysis-tab[MTA Analysis web console^] に戻り、新しいインベントリ要素の作成を行います。
 
@@ -206,6 +237,12 @@ image::mta-new-analysis.png[mta-new-analysis]
 * Business service: `Retail`
 * Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
 
+* Source code:
+** Repository type - `Git`
+** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+** Branch - `main`
+** Root path - `customers-tomcat-legacy`
+
 image::mta-new-app.png[mta-new-app]
 
 「Application Inventory」に戻り、 `New Customers` で検索を実施してください。検索後、 _New Customers_ アプリケーションのインベントリを選択し、 `Analyze` をクリックしてください。
@@ -214,30 +251,22 @@ image::mta-search-new-customers.png[mta-search-new-customers]
 
 [NOTE]
 ====
-通常は、コードの変更をコミットしてアプリケーションを再構築し、再構築したアプリケーションにて分析を行います。しかし、この分析を早く行うために、固定コードと一緒にパッケージ化されていて且つ、既にモダナイゼーションされたアプリケーション（`customers-tomcat-solution.war`）が link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea リポジトリ^]にあります。 _コミット_ から _プッシュ_ 、 _プル_ までの複数のステップを実施する代わりにこちらを使用し、新しいアプリケーションのアーティファクト（_.war_ ファイル）をローカルファイルシステムに _ビルド_ 可能です。
+MTA レポートを初めて実行する場合は（モジュール 1 をスキップした場合など）、  *Administration* ビューに移動し,  *Repositories > Git* を選択します。  *Consume insecure Git repositories* を下図のように右に切り替えます。
 
-image::gitea-repo.png[gitea-repo]
 
-Giteaリポジトリには、以下の認証情報でログインしてください。
+image::mta-admin-git.png[admin git]
+ 
+Giteaリポジトリには、以下の認証情報でログインすることもできます。
 
 * Username - `%USERID%`
-* Password - `openshift`
+* Password - `{openshift-password}`
 ====
 
-プロジェクトをローカルファイルシステムにダウンロード、もしくは複製後、 *packages-mta* フォルダに `customers-tomcat-solution.war` ファイルが存在するかどうか確認してください。
+分析モードのポップアップウィンドウから `Source code` を選択します。
 
-分析モードのポップアップウィンドウから `Upload local binary` オプションを選択します。選択後、 *customers-tomcat-solution.war* ファイルをドラッグ＆ドロップするか、ローカルファイルシステムからアップロードしてください。
-
-image::add-new-applications.png[Add new applications]
+image::add-applications.png[Add applications]
 
 実施後、 `Next` をクリックしてください。
-
-[NOTE]
-====
-アップロード完了後、画面右上に、以下の成功ポップアップメッセージが表示されたかご確認ください。バイナリファイルのアップロード完了には、数秒かかります。
-
-image::upload-success.png[upload-success]
-====
 
 アップロードの正常完了後、変換対象のオプションが表示されます。先ほどと同様にアプリケーション分析のパラメータとして　 `Containers`, `Linux`, `OpenJDK`　を選択してください。
 
@@ -257,15 +286,19 @@ image::custom-rules.png[Custom rules]
 
 `Add Rule` をクリックして、ファイルシステムにダウンロード済みの *customrules* ディレクトリにあるカスタムルール（`corporate-framework-config.windup.xml`）をアップロードしてください。
 
-ファイルをドラッグ＆ドロップするか、ローカルファイルシステムからアップロードしてください。
+`Repository` タブを選択し、Giteaレポジトリ内の *customrules* ディレクトリにあるカスタムルール (`corporate-framework-config.windup.xml`) を参照します。
+ 
+Repositoryタブで以下の情報を入力します。
 
-image::upload-custom-rule.png[upload-custom-rule]
+* Repository type - `Git`
+* Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
+* Branch - `main`
+* Root path - `customrules`
+* Associated credentials - `None`
 
-アップロード後、　`Add` をクリックしてください。クリック後、カスタムルールが追加されていることを確認してください。確認後、 `Next` をクリックします。
+image::add-repository-customrules.png[add-repository-customrules]
 
-image::enable-custom-rule.png[enable-custom-rule]
-
-次に、デフォルト値で実施するため、 `Advanced options` にて `Next` をクリックします。
+`Next` をクリックしてください。
 
 image::fine-tune.png[Fine tuning]
 
@@ -277,14 +310,16 @@ image::finish-project.png[Finish project]
 
 分析処理が始まり、完了後に分析レポートにアクセスできるようになります。分析処理が完了するまで、お待ちください。
 
-分析処理の完了後、左のキャレットから「Customers」アプリケーションを展開します。その後、 `Report` をクリックしてください。
-
 [NOTE]
 ====
 Windup用のコンテナイメージのダウンロードおよびアプリケーション分析のため、処理に数分かかる場合があります。
 ====
 
 image::new-active-analysis.png[Active analysis]
+
+ *Customers* アプリケーションを選択します。次に、右側の *Reports* タブで `Report` をクリックします。
+
+image::new-active-analysis-report.png[Active analysis]
 
 「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成してください。レポートの生成後、レポート内にて、ストーリーポイントが `0` になったことを確認してください。
 
