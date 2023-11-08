@@ -1,26 +1,22 @@
 = 1. Introduction - 10 minutes
 :imagesdir: ../assets/images
 
-[NOTE]
-====
-If you've already completed the introduction exercise in the previous module, feel free to skip to the 'Refactor' lab. This exercise is meant to introduce you to the environment and confirm your services are running correctly.
-====
-
 A common way of speaking about migrating or modernizing workloads to the cloud has been coined as the *6 Rs framework*. This framework can be broken down as follows.
 
-image::mod-strategies-refactor.png[Modernization Strategies]
+image::mod-strategies.png[Modernization Strategies]
 
-For a Refactor (including rewrites or re-architectures),Red Hat helps our customers' application modernization journey with this approach:
+Red Hat helps our customers' application modernization journey with this approach:
 
-* Iteratively strangle services into individual observable microservices running in separate containers.
-* More productive developers via fast inner loop development. Faster startup time using link:https://www.redhat.com/en/products/runtimes[cloud-native runtimes^] (e.g. link:https://www.redhat.com/en/topics/cloud-native-apps/what-is-quarkus[Quarkus^], link:https://access.redhat.com/products/spring-boot[Spring Boot^])
-* Isolated domains allow for faster iteration, recovery of services, efficient scalability, and ability to experiment more quickly.
-* Basis to begin integrating with application services for greater innovation and reach at lower costs
+image::app-mod-approach.png[Modernization Approach]
 
-This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
+This module will walk you through 2 of the phases (_Assess_, _Rationalize_) as following steps:
 
-* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
-* Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
+* Assessment and Analysis of the legacy application using https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^]
+
+[NOTE]
+====
+Migration Toolkit for Applications (MTA) accelerates large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. This solution provides insight throughout the adoption process, at both the portfolio and application levels: inventory, assess, analyze, and manage applications for faster migration to OpenShift via the user interface.
+====
 
 == 1.1. Understand the Globex Retail System Architecture
 
@@ -28,18 +24,13 @@ Globex is a fictional company we will use for this workshop. The Globex system i
 
 image::architecture_initial_m2.png[architecture_initial_m2]
 
-Your initial state for this workshop is an environment that is spread over Red Hat Virtualization and Red Hat OpenShift Container Platform.
+Your initial state for this workshop is an environment that is spread over Legacy Virtualization and Red Hat OpenShift Container Platform.
 
 Your application has already been partially moved from your legacy environments to OpenShift.
 
 The Globex retail application consists of a _Node.js_ frontend service which is getting its data via a gateway service. The gateway service is connected to three backend services: customers, orders and inventory. Each service uses its own database to store data.
 
-The services running on OpenShift are deployed in a namespace `retail-%USERID%`. The services will ultimately be managed using *OpenShift GitOps* and *Pipelines* covered in module 3.
-
-[IMPORTANT]
-====
-In this exercise you will focus on refactoring the legacy application in the above red box section and deploy it to the OpenShift cluster.
-====
+The services running on OpenShift are deployed in a namespace `retail-%USERID%`. You will eventually manage these services using *OpenShift GitOps* and *Pipelines* in later modules.
 
 [NOTE]
 ====
@@ -50,8 +41,8 @@ All source code for the applications as well as the GitOps YAML manifests for al
 
 The problem right now is in the *customers* service:
 
-* The customers service uses an old Java code base running on Apache Tomcat in a VM on Red Hat Virtualization. In this module you will assess and analyze this legacy Java application to learn the best way to modernize the Java code and then deploy the application to OpenShift on top of Red Hat JBoss Web Server.
-* The customers database is using an Oracle database running as a VM in Red Hat Virtualization. Because this is Oracle you can not deploy the database as a Pod on OpenShift. Instead you will lift and shift the VM to OpenShift Virtualization using the Migration Toolkit for Virtualization.
+* The customers service uses an old Java code base running on Apache Tomcat in a VM on Legacy Virtualization. In this module you will assess and analyze this legacy Java application to learn the best way to modernize the Java code and then deploy the application to OpenShift on top of Red Hat JBoss Web Server.
+* The customers database is using an PostgreSQL database running as a VM in Legacy Virtualization. The IT Ops team at Globex want to keep running the PostgreSQL database on virtualization environment rather than containerization. Therefore, you will lift and shift the VM to OpenShift Virtualization using the Migration Toolkit for Virtualization.
 
 Once you have finished the all of the modules in this workshop, your deployment architecture will look like this:
 
@@ -69,7 +60,7 @@ If your `username` is properly set, then you can move on. *If not, in the above 
 
 image::setuser.png[setuser]
 
-This will customize the links and copy/paste code for this workshop. If you accidentally type the wrong username, just update your username in the URL parameters (e.g. ` 1-introduction.html?USERID=%USERID% ` )
+This will customize the links and copy/paste code for this workshop. If you accidentally type the wrong username, just update your username in the URL parameters (e.g., `1-introduction.html?USERID=%USERID%` )
 
 [IMPORTANT]
 ====
@@ -81,8 +72,8 @@ You have to use *an unique username* (e.g. `%USERID%`) while you're running the 
 Your OpenShift cluster is already configured with everything you need. Here are the details:
 
 * `Gitea` to host the source code repositories
-* `OpenShift Virtualization` to ultimately run the migrated Oracle VM
-* `Migration Toolkit for Virtualization` to facilitate the migration of the Oracle VM to Red Hat OpenShift Container Platform
+* `OpenShift Virtualization` to ultimately run the migrated PostgreSQL VM
+* `Migration Toolkit for Virtualization` to facilitate the migration of the PostgreSQL VM to Red Hat OpenShift Container Platform
 * `OpenShift GitOps` to manage the deployed services using a GitOps approach through ArgoCD
 * `OpenShift Pipelines` to build the customer application from source code and deploy to the `retail` project using GitOps
 * `Migration Toolkit for Applications` to help modernize the customer service.
@@ -149,7 +140,7 @@ Click through the three panels on the left.
 
 == 1.4. Access the Customer Data
 
-The RHV environment not only has the Oracle Database VM deployed but it also hosts another VM which runs the old customer application on top of Apache Tomcat.
+The RHV environment not only has the PostgreSQL Database VM deployed but it also hosts another VM which runs the old customer application on top of Apache Tomcat.
 
 From a terminal window you can use `curl` to demonstrate that the application is connected to the database.
 
@@ -185,8 +176,27 @@ The output should look like:
 {"id":2,"username":"hate_guybrush","name":"Pirate","surname":"Lechuck","address":"Caverns of Meat, no number","zipCode":"MO-666","city":"Giant Monkey Head","country":"Monkey Island"}
 ----
 
+== 1.5 Change the Working Project
+
+Make sure to *check out* to the right branch, `patch-postgre` that you'll go through this module today! Run the following `git` command in the VS Code terminal.
+
+[.console-input]
+[source,bash]
+----
+git checkout patch-postgres
+----
+
+The output should be something like this.
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+Switched to branch 'patch-postgres'
+Your branch is up to date with 'origin/patch-postgres'.
+----
+
 == Congratulations!
 
 You have now successfully learned about the architecture of the application and confirmed your workshop environment.
 
-In the next step, you'll continue the modernization process by analyzing the source code of one of the applications and refactor it to run as a Linux container on OpenShift.
+In the next step, you'll begin the modernization process by assessing the siloed current application portfolio to identify issues and risks that will need to be considered as during the modernization journey.
