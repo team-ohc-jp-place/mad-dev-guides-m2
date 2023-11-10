@@ -201,15 +201,15 @@ MTAレポートを分析する前に、変更をコミットしてGiteaリポジ
 * PersistenceConfig.java
 * persistence.properties
 
-コメントに `Fix migration issus` と入力し、 `Commit` 選択します。
+コメントに `Fix migration issues` と入力し、 `Commit` 選択します。
 
 image::code-commit.png[code-commit]
 
- `Yes` を選択します。
+`Yes` を選択します。
 
 image::code-commit-yes.png[code-commit]
 
- `Sync Changes`　を選択します。
+`Sync Changes`　を選択します。
 
 image::sync-changes.png[sync-changes]
 
@@ -218,7 +218,7 @@ image::sync-changes.png[sync-changes]
 画面右下に *Would you like code-server to periodically run "git fetch"?* というポップアップメッセージが表示される場合がありますが、無視して問題ありません。
 ====
 
- link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] に戻ると、コミットした内容が表示されます。
+link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] に戻ると、コミットした内容が表示されます。
 
 image::gitea-commit.png[gitea-commit]
 
@@ -284,8 +284,6 @@ image::packages.png[Select packages]
 
 image::custom-rules.png[Custom rules]
 
-`Add Rule` をクリックして、ファイルシステムにダウンロード済みの *customrules* ディレクトリにあるカスタムルール（`corporate-framework-config.windup.xml`）をアップロードしてください。
-
 `Repository` タブを選択し、Giteaレポジトリ内の *customrules* ディレクトリにあるカスタムルール (`corporate-framework-config.windup.xml`) を参照します。
  
 Repositoryタブで以下の情報を入力します。
@@ -317,7 +315,7 @@ Windup用のコンテナイメージのダウンロードおよびアプリケ�
 
 image::new-active-analysis.png[Active analysis]
 
- *Customers* アプリケーションを選択します。次に、右側の *Reports* タブで `Report` をクリックします。
+*Customers* アプリケーションを選択します。次に、右側の *Reports* タブで `Report` をクリックします。
 
 image::new-active-analysis-report.png[Active analysis]
 
