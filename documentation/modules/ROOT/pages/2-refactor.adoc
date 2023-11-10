@@ -133,29 +133,29 @@ image::comment-dep.png[comment-dep]
 
 === 2.2.6. Update application.properties
 
-In the meantime, the Globex retails system's *SRE team* has already migrated the `Oracle database` running from the virtual machine on `Red Hat Virtualization` to `OpenShift Virtualization` based on KubeVirt.
+In the meantime, the Globex retails system's *SRE team* has already migrated the `PostgreSQL database` running from the virtual machine on `Red Hat Virtualization` to `OpenShift Virtualization` based on KubeVirt.
 
 [TIP]
 ====
 The link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] enables you to migrate virtual machines from VMware vSphere or Red Hat Virtualization to OpenShift Virtualization based on link:https://kubevirt.io[KubeVirt^]. This is an add-on to OpenShift Container Platform, enabling you to run and manage virtual machine workloads alongside container workloads.
 ====
 
-Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of retail-%USERID% project in the Developer perspective. You will see the `oracle-database` virtual machine on OpenShift.
+Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of retail-%USERID% project in the Developer perspective. You will see the `postgresql-database` virtual machine on OpenShift.
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
 
-In VSCode, Open the `persistence.properties` in the *src/main/resources* folder to access the *customers* data in the new *oracle-database* virtual machine on OpenShift.
+In VSCode, Open the `persistence.properties` in the *src/main/resources* folder to access the *customers* data in the new *postgresql-database* virtual machine on OpenShift.
 
 Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
 
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
-jdbc.url=jdbc:oracle:thin:@oracle-database.retail-%USERID%.svc.cluster.local:1521/XEPDB1
-jdbc.user=customer
+jdbc.url=jdbc:postgresql://postgresql-database:5432/customers
+jdbc.user=redhat
 jdbc.password=redhat
 ----
 
@@ -178,7 +178,6 @@ The output should end up with `BUILD SUCCESS`.
 [source,bash,subs="+attributes,macros+"]
 ----
 ....
-[INFO] --- maven-war-plugin:3.3.1:war (default-war) @ customers-tomcat ---
 [INFO] Packaging webapp
 [INFO] Assembling webapp [customers-tomcat] in [/home/codeserver/modern-app-dev/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT]
 [INFO] Processing war project
@@ -186,8 +185,8 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.884 s
-[INFO] Finished at: 2023-06-30T22:01:49Z
+[INFO] Total time:  15.758 s
+[INFO] Finished at: 2023-11-10T03:40:28Z
 [INFO] ------------------------------------------------------------------------
 ----
 
@@ -218,7 +217,7 @@ image::sync-changes.png[sync-changes]
 You might see *Would you like code-server to periodically run "git fetch"?* popup message on the right bottom. Then, you can ignore it.
 ====
 
-If you go back to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^], you will see the commit.
+If you go back to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/patch-postgres[Gitea repository^], you will see the commit. Make sure that you're referring to the *patch-postgres* branch.
 
 image::gitea-commit.png[gitea-commit]
 
@@ -235,12 +234,12 @@ Fill in the following fields, and click `Create`:
 * Name: `New Customers`
 * Description: `Modernized Customers management service`
 * Business service: `Retail`
-* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
+* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Postgresql`
 
 * Source code:
 ** Repository type - `Git`
 ** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-** Branch - `main`
+** Branch - `patch-postgres`
 ** Root path - `customers-tomcat-legacy`
 
 image::mta-new-app.png[mta-new-app]
@@ -289,7 +288,7 @@ Key in the following information in the repository page.
 
 * Repository type - `Git`
 * Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-* Branch - `main`
+* Branch - `patch-postgres`
 * Root path - `customrules`
 * Associated credentials - `None`
 
