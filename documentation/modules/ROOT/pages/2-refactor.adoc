@@ -154,7 +154,7 @@ Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
-jdbc.url=jdbc:postgresql://postgresql-database:5432/customers
+jdbc.url=jdbc:postgresql://postgresql-database.retail-%USERID%.svc.cluster.local:5432/customers
 jdbc.user=redhat
 jdbc.password=redhat
 ----
