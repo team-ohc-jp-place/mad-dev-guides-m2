@@ -149,14 +149,12 @@ image::retail-topology.png[comment-dep]
 
 In VSCode, Open the `persistence.properties` in the *src/main/resources* folder to access the *customers* data in the new *postgresql-database* virtual machine on OpenShift.
 
-Replace the following keys and values such as `jdbc.url`, `jdbc.user`, and `jdbc.password`.
+Replace the following `jdbc.url`.
 
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
 jdbc.url=jdbc:postgresql://postgresql-database.retail-%USERID%.svc.cluster.local:5432/customers
-jdbc.user=redhat
-jdbc.password=redhat
 ----
 
 image::update-app-props.png[update-app-props]
