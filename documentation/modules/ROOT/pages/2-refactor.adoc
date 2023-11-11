@@ -200,7 +200,7 @@ You will see 3 changes:
 * PersistenceConfig.java
 * persistence.properties
 
-Type `Fix migration issus` in the comment. Select `Commit`.
+Type `Fix migration issues` in the comment. Select `Commit`.
 
 image::code-commit.png[code-commit]
 
