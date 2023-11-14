@@ -159,7 +159,7 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-Access the following RESTful API of the customers application to retrieve the customer data in the new Oracle database on OpenShift virtualization.
+Access the following RESTful API of the customers application to retrieve the customer data in the new PostgreSQL database on OpenShift virtualization.
 
 [.console-input]
 [source,bash]
