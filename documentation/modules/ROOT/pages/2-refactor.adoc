@@ -294,6 +294,12 @@ Repositoryタブで以下の情報を入力します。
 * Root path - `customrules`
 * Associated credentials - `None`
 
+[NOTE]
+====
+`Associated credentials` に `None` が見つからない場合は、変更が必要なものではないのでそのままにしてください。
+====
+
+
 image::add-repository-customrules.png[add-repository-customrules]
 
 `Next` をクリックしてください。
