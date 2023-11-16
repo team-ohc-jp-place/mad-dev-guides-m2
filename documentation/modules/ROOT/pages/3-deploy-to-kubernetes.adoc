@@ -3,7 +3,7 @@
 
 == 本演習の目標
 
-本演習の目標は、 link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^] を使用して、モダナイゼーシされたお客様のアプリケーションを OpenShiftに構築およびデプロイすることです。
+本演習の目標は、 link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^] を使用して、モダナイゼーションされたお客様のアプリケーションを OpenShiftに構築およびデプロイすることです。
 
 本演習では、以下を実施します。
 
