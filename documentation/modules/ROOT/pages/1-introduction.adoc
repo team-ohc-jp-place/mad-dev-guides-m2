@@ -1,6 +1,11 @@
 = 1. Introduction - 10 minutes
 :imagesdir: ../assets/images
 
+[NOTE]
+====
+If you've already completed the introduction exercise in the previous module, feel free to skip to the 'Refactor' lab. This exercise is meant to introduce you to the environment and confirm your services are running correctly.
+====
+
 A common way of speaking about migrating or modernizing workloads to the cloud has been coined as the *6 Rs framework*. This framework can be broken down as follows.
 
 image::mod-strategies.png[Modernization Strategies]
@@ -199,4 +204,4 @@ Switched to a new branch 'patch-postgres'
 
 You have now successfully learned about the architecture of the application and confirmed your workshop environment.
 
-In the next step, you'll begin the modernization process by assessing the siloed current application portfolio to identify issues and risks that will need to be considered as during the modernization journey.
+In the next step, you'll continue the modernization process by analyzing the source code of one of the applications and refactor it to run as a Linux container on OpenShift.
