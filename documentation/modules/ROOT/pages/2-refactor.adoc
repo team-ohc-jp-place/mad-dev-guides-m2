@@ -133,30 +133,28 @@ image::comment-dep.png[comment-dep]
 
 === 2.2.6. application.propertiesの更新
 
-一方、Globex Retailsのシステム管理を行っている *SRE team* チームは、 `Red Hat Virtualization` 上の仮想マシンで稼働していた `Oracleデータベース` を、KubeVirtをベースにした `OpenShift Virtualization` へのマイグレーション作業をすでに実施しています。
+一方、Globex Retailsのシステム管理を行っている *SRE team* チームは、 `Red Hat Virtualization` 上の仮想マシンで稼働していた `PostgreSQLデータベース` を、KubeVirtをベースにした `OpenShift Virtualization` へのマイグレーション作業をすでに実施しています。
 
 [TIP]
 ====
 link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] は、VMware vSphereやRed Hat Virtualizationから link:https://kubevirt.io[KubeVirt^] ベースのOpenShift Virtualizationへ仮想マシンのマイグレーションを行うことができます。OpenShift Container Platformのアドオンで、コンテナワークロードと並行して仮想マシンのワークロードの実行および管理が可能となります。
 ====
 
-「Developer」パースペクティブで「retail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `Oracleデータベース` の仮想マシンが表示されています。
+「Developer」パースペクティブで「retail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `postgresql-database` の仮想マシンが表示されています。
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
 
-VS Codeで、 *src/main/resources* フォルダの `persistence.properties` を開き、OpenShift上の新しい *Oracleデータベース* の仮想マシンの *Customers* データにアクセスします。
+VS Codeで、 *src/main/resources* フォルダの `persistence.properties` を開き、OpenShift上の新しい *postgresql-database* の仮想マシンの *Customers* データにアクセスします。
 
-`jdbc.url` 、 `jdbc.user` 、 `jdbc.password` など、以下のキーと値を置き換えてください。
+`jdbc.url` を置き換えてください。
 
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
-jdbc.url=jdbc:oracle:thin:@oracle-database.retail-%USERID%.svc.cluster.local:1521/XEPDB1
-jdbc.user=customer
-jdbc.password=redhat
+jdbc.url=jdbc:postgresql://postgresql-database.retail-%USERID%.svc.cluster.local:5432/customers
 ----
 
 image::update-app-props.png[update-app-props]
@@ -178,7 +176,6 @@ mvn clean package
 [source,bash,subs="+attributes,macros+"]
 ----
 ....
-[INFO] --- maven-war-plugin:3.3.1:war (default-war) @ customers-tomcat ---
 [INFO] Packaging webapp
 [INFO] Assembling webapp [customers-tomcat] in [/home/codeserver/modern-app-dev/customers-tomcat-legacy/target/customers-tomcat-0.0.1-SNAPSHOT]
 [INFO] Processing war project
@@ -186,8 +183,8 @@ mvn clean package
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.884 s
-[INFO] Finished at: 2023-06-30T22:01:49Z
+[INFO] Total time:  15.758 s
+[INFO] Finished at: 2023-11-10T03:40:28Z
 [INFO] ------------------------------------------------------------------------
 ----
 
@@ -218,7 +215,7 @@ image::sync-changes.png[sync-changes]
 画面右下に *Would you like code-server to periodically run "git fetch"?* というポップアップメッセージが表示される場合がありますが、無視して問題ありません。
 ====
 
-link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev[Gitea repository^] に戻ると、コミットした内容が表示されます。
+link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/patch-postgres[Gitea repository^] に戻ると、コミットした内容が表示されます。 *patch-postgres* ブランチにアクセスしていることを確認してください。
 
 image::gitea-commit.png[gitea-commit]
 
@@ -235,12 +232,12 @@ image::mta-new-analysis.png[mta-new-analysis]
 * Name: `New Customers`
 * Description: `Modernized Customers management service`
 * Business service: `Retail`
-* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Oracle`
+* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Postgresql`
 
 * Source code:
 ** Repository type - `Git`
 ** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-** Branch - `main`
+** Branch - `patch-postgres`
 ** Root path - `customers-tomcat-legacy`
 
 image::mta-new-app.png[mta-new-app]
@@ -290,7 +287,7 @@ Repositoryタブで以下の情報を入力します。
 
 * Repository type - `Git`
 * Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-* Branch - `main`
+* Branch - `patch-postgres`
 * Root path - `customrules`
 * Associated credentials - `None`
 

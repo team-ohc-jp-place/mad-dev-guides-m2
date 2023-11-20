@@ -160,7 +160,7 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-OpenShift virtualization上の新しいOracleデータベースのお客様データを取得のため、「Customers」アプリケーションにおける、以下のRESTful APIにアクセスしてください。
+OpenShift virtualization上の新しいPostgreSQLデータベースのお客様データを取得するため、「Customers」アプリケーションにおける、以下のRESTful APIにアクセスしてください。
 
 [.console-input]
 [source,bash]
