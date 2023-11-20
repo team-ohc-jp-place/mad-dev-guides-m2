@@ -10,27 +10,17 @@ A common way of speaking about migrating or modernizing workloads to the cloud h
 
 image::mod-strategies-refactor.png[Modernization Strategies]
 
-[IMPORTANT]
-====
-Globex's developer has already modernized the legacy application (*customers*) to the Red Hat OpenShift using https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] assessment and analysis tool. In the meantime, the SRE team has also completed to migrate the Oracle database from Red Hat Virtualization to OpenShift Virtualization by `module 1` and `2`.
-====
+For a Refactor (including rewrites or re-architectures),Red Hat helps our customers' application modernization journey with this approach:
 
-This module will walk you through 2 of the phases (_Pipeline_, _GitOps_) to build advanced build and deployment capabilities as following steps:
+* Iteratively strangle services into individual observable microservices running in separate containers.
+* More productive developers via fast inner loop development. Faster startup time using link:https://www.redhat.com/en/products/runtimes[cloud-native runtimes^] (e.g. link:https://www.redhat.com/en/topics/cloud-native-apps/what-is-quarkus[Quarkus^], link:https://access.redhat.com/products/spring-boot[Spring Boot^])
+* Isolated domains allow for faster iteration, recovery of services, efficient scalability, and ability to experiment more quickly.
+* Basis to begin integrating with application services for greater innovation and reach at lower costs
 
-* Build continuous integration and continuous delivery (CI/CD) based on link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#op-detailed-concepts[OpenShift Pipeline^] with the following key features:
+This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
 
-** Enable to build a serverless CI/CD system that runs pipelines with all the required dependencies in isolated containers
-** Allows  decentralized teams to design the automating work on microservice-based architecture
-** Use standard CI/CD pipeline definitions that are easy to extend and integrate with the existing Kubernetes tools, enabling you to scale on-demand
-** Enable to build images with Kubernetes tools such as Source-to-Image (S2I), Buildah, Buildpacks, and Kaniko that are portable across any Kubernetes platform
-** Use the OpenShift Container Platform Developer console to create Tekton resources, view logs of pipeline runs, and manage pipelines in your OpenShift Container Platform namespaces
-
-* Deploy the modernized applications to Red Hat OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#about-redhat-openshift-gitops_understanding-openshift-gitops[OpenShift GitOps (ArgoCD)^] with the following key features:
-
-** Ensure that the clusters have similar states for configuration, monitoring, and storage
-** Apply or revert configuration changes to multiple OpenShift Container Platform clusters
-** Associate templated configuration with different environments
-** Promote applications across clusters, from staging to production
+* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
+* Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
 
 == 1.1. Understand the Globex Retail System Architecture
 
