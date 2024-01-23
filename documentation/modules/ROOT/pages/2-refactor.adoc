@@ -112,6 +112,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 ----
 
+[IMPORTANT]
+====
+Please make sure you don't remove the package name from the class and the end result is like this.
+====
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+package io.konveyor.demo.ordermanagement.config;
+----
+
 === 2.2.5. Remove Corporate libraries
 
 With these changes, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment out the dependency in your Maven project.
