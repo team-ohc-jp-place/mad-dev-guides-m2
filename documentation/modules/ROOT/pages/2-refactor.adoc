@@ -117,8 +117,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 Please make sure you don't remove the package name from the class and the end result is like this.
 ====
 
-[.console-input]
-[source,java,subs="+attributes,macros+"]
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
 ----
 package io.konveyor.demo.ordermanagement.config;
 ----
