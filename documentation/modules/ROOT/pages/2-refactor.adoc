@@ -112,6 +112,35 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 ----
 
+[IMPORTANT]
+====
+Please make sure you don't remove the package name from the class and the end result is like this.
+====
+
+[.console-input]
+[source,java,subs="+attributes,macros+"]
+----
+package io.konveyor.demo.ordermanagement.config;
+
+import java.util.Properties;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+----
+
 === 2.2.5. Remove Corporate libraries
 
 With these changes, you don't need to refer to the external corporate libraries anymore. You can easily remove or comment out the dependency in your Maven project.
