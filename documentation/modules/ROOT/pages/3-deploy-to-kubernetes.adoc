@@ -155,7 +155,21 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 == 3.6. Verify the new customers application
 
-`Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
+`Congratulations!` You just deployed a new *customers* application successfully to the OpenShift cluster. 
+
+First, open a new browser to access the link:https://console-openshift-console.%SUBDOMAIN%/dev-pipelines/ns/cicd-%USERID%[OpenShift Pipeline^].
+
+Use the following credentials if you haven't logged in to the OpenShift cluster before. OpenShift is already integrated with https://access.redhat.com/products/red-hat-single-sign-on/[Red Hat Single Sign On^].
+
+image::sso_login.png[openshift_login]
+
+* Login using your credentials:
+
+** Username: `%USERID%`
+** Password: `{openshift-password}`
+
+
+Access link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] if the application is running in the customers-qa-%USERID% project.
 
 image::customers-qa-topology.png[customers-qa-topology]
 
