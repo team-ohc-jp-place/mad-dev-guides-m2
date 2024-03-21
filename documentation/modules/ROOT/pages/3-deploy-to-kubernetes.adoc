@@ -156,7 +156,19 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 == 3.6. 「New Customers」アプリケーションの確認
 
-`おめでとうございます` 。OpenShiftクラスタに「New Customers」アプリケーションのデプロイに成功しました。このアプリケーションが「customers-qa-%USERID%」プロジェクトで実行されている場合は、 link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] にアクセスしてください。
+`おめでとうございます` 。OpenShiftクラスタに「New Customers」アプリケーションのデプロイに成功しました。
+
+* アクセス
+このアプリケーションが「customers-qa-%USERID%」プロジェクトで実行されている場合は、 link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] にアクセスしてください。
+
+OpenShift クラスタにログインしたことがない場合は、次の認証情報を使用してください。OpenShiftはすでに https://access.redhat.com/products/red-hat-single-sign-on/[Red Hat Single Sign On^] と統合されています。
+
+image::sso_login.png[openshift_login]
+
+* あなたのログイン情報は以下の通りです:
+
+** Username: `%USERID%`
+** Password: `{openshift-password}`
 
 image::customers-qa-topology.png[customers-qa-topology]
 

@@ -112,6 +112,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 ----
 
+[IMPORTANT]
+====
+クラスからパッケージ名を削除しないように注意してください。
+====
+
+[.console-output]
+[source,bash,subs="+attributes,macros+"]
+----
+package io.konveyor.demo.ordermanagement.config;
+----
+
 === 2.2.5. Corporate ライブラリの削除
 
 今回の変更で、外部のcorporateライブラリーを参照する必要がなくなったため、Mavenプロジェクトで依存関係を削除もしくは、コメントアウトします。
