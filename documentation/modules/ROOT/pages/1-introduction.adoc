@@ -36,9 +36,9 @@ The Globex retail application consists of a _Node.js_ frontend service which is 
 
 The services running on OpenShift are deployed in a namespace `retail-%USERID%`. You will eventually manage these services using *OpenShift GitOps* and *Pipelines* in later modules.
 
-[NOTE]
+[IMPORTANT]
 ====
-You might see the customers pods are in a failed state due to _ImagePullBackOff Error_. It will be automatically fixed when you finish the OpenShift CI/CD and GitOps sections later.
+**You might see the customers pods are in a failed state due to _ImagePullBackOff Error_. It will be automatically fixed when you finish the OpenShift CI/CD and GitOps sections later.**
 ====
 
 All source code for the applications as well as the GitOps YAML manifests for all services are stored in a (Git-compatible) *Gitea* repository that for workshop purposes is hosted on the OpenShift cluster.
