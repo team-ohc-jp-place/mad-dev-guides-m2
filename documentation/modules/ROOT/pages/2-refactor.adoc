@@ -226,7 +226,7 @@ image::sync-changes.png[sync-changes]
 You might see *Would you like code-server to periodically run "git fetch"?* popup message on the right bottom. Then, you can ignore it.
 ====
 
-If you go back to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/patch-postgres[Gitea repository^], you will see the commit. Make sure that you're referring to the *patch-postgres* branch.
+If you go back to your link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/ocp-4.15[Gitea repository^], you will see the commit. Make sure that you're referring to the *ocp-4.15* branch.
 
 image::gitea-commit.png[gitea-commit]
 
@@ -248,7 +248,7 @@ Fill in the following fields, and click `Create`:
 * Source code:
 ** Repository type - `Git`
 ** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-** Branch - `patch-postgres`
+** Branch - `ocp-4.15`
 ** Root path - `customers-tomcat-legacy`
 
 image::mta-new-app.png[mta-new-app]
@@ -297,7 +297,7 @@ Key in the following information in the repository page.
 
 * Repository type - `Git`
 * Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-* Branch - `patch-postgres`
+* Branch - `ocp-4.15`
 * Root path - `customrules`
 * Associated credentials - `None`
 
