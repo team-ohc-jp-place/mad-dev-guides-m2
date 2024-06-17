@@ -146,7 +146,7 @@ image::comment-dep.png[comment-dep]
 
 In the meantime, the Globex retails system's *SRE team* has already migrated the `PostgreSQL database` running `Red Hat OpenShift`.
 
-Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of retail-%USERID% project in the Developer perspective. You will see the `postgresql-database` virtual machine on OpenShift.
+Access the link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] of retail-%USERID% project in the Developer perspective. You will see the `postgresql-database` container on OpenShift.
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
@@ -189,8 +189,8 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  15.758 s
-[INFO] Finished at: 2023-11-10T03:40:28Z
+[INFO] Total time:  15.198 s
+[INFO] Finished at: 2024-06-17T11:22:02Z
 [INFO] ------------------------------------------------------------------------
 ----
 
@@ -238,7 +238,7 @@ Fill in the following fields, and click `Create`:
 * Name: `New Customers`
 * Description: `Modernized Customers management service`
 * Business service: `Retail`
-* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Postgresql`
+* Tags: `Language / Java`, `Runtime / Tomcat`, `Runtime / Spring Boot`, `Operating System / RHEL 8`, `Database / Postgresql`
 
 * Source code:
 ** Repository type - `Git`
@@ -247,6 +247,7 @@ Fill in the following fields, and click `Create`:
 ** Root path - `customers-tomcat-legacy`
 
 image::mta-new-app.png[mta-new-app]
+image::mta-new-app-2.png[mta-new-app]
 
 Once you go back to the Application inventory page, search `New Customers` by name. Then, choose the _New Customers_ application inventory. Click on `Analyze`.
 
@@ -324,7 +325,7 @@ The analysis will take a few minutes to pull the Windup image and execute the ap
 
 image::new-active-analysis.png[Active analysis]
 
-Select *Customers* application. Then click on `Report` in the *Reports* tab on the right.
+Select *Customers* application. Then click on `Issues` in the *Details* tab on the right.
 
 image::new-active-analysis-report.png[Active analysis]
 
