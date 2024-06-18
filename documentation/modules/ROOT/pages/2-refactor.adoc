@@ -160,7 +160,7 @@ Replace the following `jdbc.url`.
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
-jdbc.url=jdbc:postgresql://postgresql-customer.retail-%USERID%.svc.cluster.local:5432/customers
+jdbc.url=jdbc:postgresql://postgresql-customer.retail-%USERID%.svc.cluster.local:5432/customer
 ----
 
 image::update-app-props.png[update-app-props]
