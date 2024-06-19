@@ -329,7 +329,7 @@ Select *Customers* application. Then click on `Issues` in the *Details* tab on t
 
 image::new-active-analysis-report.png[Active analysis]
 
-Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that it now reports `0` Story Points.
+Configure the project with the same settings and custom rules that we used for the Customers Service project. Once the report is finished, verify that you have `no` issues with the application.
 
 ## Congratulations!
 
