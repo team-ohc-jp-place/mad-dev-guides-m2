@@ -9,7 +9,7 @@ At the end, you will again analyze the customers application using MTA Analysis 
 
 == 2.1. Explore the Migration issues
 
-According to the analysis report, the migration issues are related to external configurations with *hard-coded static IP addresses*.
+According to the analysis result in the previous module, the migration issues are related to external configurations with *hard-coded static IP addresses*.
 
 image::static-ip-issue.png[static-ip-issue]
 
@@ -190,7 +190,7 @@ The output should end up with `BUILD SUCCESS`.
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
 [INFO] Total time:  15.198 s
-[INFO] Finished at: 2024-06-17T11:22:02Z
+[INFO] Finished at: 2024-06-29T02:56:36Z
 [INFO] ------------------------------------------------------------------------
 ----
 
