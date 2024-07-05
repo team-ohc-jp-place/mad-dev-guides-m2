@@ -9,7 +9,7 @@
 
 == 2.1. マイグレーション問題の調査
 
-分析レポートによると、このマイグレーションの対する問題は、ハードコーディングされた *固定IPアドレス* による外部構成に関連するものとなっています。
+前のモジュールでの分析レポートによると、このマイグレーションの対する問題は、ハードコーディングされた *固定IPアドレス* による外部構成に関連するものとなっています。
 
 image::static-ip-issue.png[static-ip-issue]
 
@@ -144,28 +144,23 @@ image::comment-dep.png[comment-dep]
 
 === 2.2.6. application.propertiesの更新
 
-一方、Globex Retailsのシステム管理を行っている *SRE team* チームは、 `Red Hat Virtualization` 上の仮想マシンで稼働していた `PostgreSQLデータベース` を、KubeVirtをベースにした `OpenShift Virtualization` へのマイグレーション作業をすでに実施しています。
+今までの作業をやっている間にGlobex Retailsのシステム管理を行っている *SRE team* チームは `PostgreSQLデータベース` をOpenShift上で動作するようにするためのマイグレーション作業をすでに実施しています。
 
-[TIP]
-====
-link:https://access.redhat.com/documentation/en-us/migration_toolkit_for_virtualization/2.0/html/installing_and_using_the_migration_toolkit_for_virtualization/about-mtv_mtv[Migration Toolkit for Virtualization (MTV)^] は、VMware vSphereやRed Hat Virtualizationから link:https://kubevirt.io[KubeVirt^] ベースのOpenShift Virtualizationへ仮想マシンのマイグレーションを行うことができます。OpenShift Container Platformのアドオンで、コンテナワークロードと並行して仮想マシンのワークロードの実行および管理が可能となります。
-====
-
-「Developer」パースペクティブで「retail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスすると、OpenShift上に `postgresql-database` の仮想マシンが表示されています。
+「Developer」パースペクティブで「retail-%USERID%」プロジェクトの link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/retail-%USERID%?view=graph[Topology view^] ビューにアクセスします。アクセスするとOpenShift上にある `postgresql-database` のコンテナが表示されています。
 
 * Username: `%USERID%`
 * Password: `{openshift-password}`
 
 image::retail-topology.png[comment-dep]
 
-VS Codeで、 *src/main/resources* フォルダの `persistence.properties` を開き、OpenShift上の新しい *postgresql-database* の仮想マシンの *Customers* データにアクセスします。
+VS Codeで、 *src/main/resources* フォルダの `persistence.properties` を開き、OpenShift上の新しい *postgresql-customer* コンテナの *Customers* データにアクセスします。
 
 `jdbc.url` を置き換えてください。
 
 [.console-input]
 [source,properties,subs="+attributes,macros+"]
 ----
-jdbc.url=jdbc:postgresql://postgresql-database.retail-%USERID%.svc.cluster.local:5432/customers
+jdbc.url=jdbc:postgresql://postgresql-customer.retail-%USERID%.svc.cluster.local:5432/customer
 ----
 
 image::update-app-props.png[update-app-props]
@@ -194,8 +189,8 @@ mvn clean package
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  15.758 s
-[INFO] Finished at: 2023-11-10T03:40:28Z
+[INFO] Total time:  15.198 s
+[INFO] Finished at: 2024-06-29T02:56:36Z
 [INFO] ------------------------------------------------------------------------
 ----
 
@@ -226,7 +221,7 @@ image::sync-changes.png[sync-changes]
 画面右下に *Would you like code-server to periodically run "git fetch"?* というポップアップメッセージが表示される場合がありますが、無視して問題ありません。
 ====
 
-link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/patch-postgres[Gitea repository^] に戻ると、コミットした内容が表示されます。 *patch-postgres* ブランチにアクセスしていることを確認してください。
+link:https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev/src/branch/ocp-4.15[Gitea repository^] に戻ると、コミットした内容が表示されます。 *ocp-4.15* ブランチにアクセスしていることを確認してください。
 
 image::gitea-commit.png[gitea-commit]
 
@@ -243,15 +238,16 @@ image::mta-new-analysis.png[mta-new-analysis]
 * Name: `New Customers`
 * Description: `Modernized Customers management service`
 * Business service: `Retail`
-* Tags: `Java`, `Tomcat`, `Spring Boot`, `RHEL 8`, `Postgresql`
+* Tags: `Language / Java`, `Runtime / Tomcat`, `Runtime / Spring Boot`, `Operating System / RHEL 8`, `Database / Postgresql`
 
 * Source code:
 ** Repository type - `Git`
 ** Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-** Branch - `patch-postgres`
+** Branch - `ocp-4.15`
 ** Root path - `customers-tomcat-legacy`
 
 image::mta-new-app.png[mta-new-app]
+image::mta-new-app-2.png[mta-new-app]
 
 「Application Inventory」に戻り、 `New Customers` で検索を実施してください。検索後、 _New Customers_ アプリケーションのインベントリを選択し、 `Analyze` をクリックしてください。
 
@@ -298,7 +294,7 @@ Repositoryタブで以下の情報を入力します。
 
 * Repository type - `Git`
 * Source Repository - `https://gitea.%SUBDOMAIN%/%USERID%/modern-app-dev.git`
-* Branch - `patch-postgres`
+* Branch - `ocp-4.15`
 * Root path - `customrules`
 * Associated credentials - `None`
 
@@ -329,12 +325,11 @@ Windup用のコンテナイメージのダウンロードおよびアプリケ�
 
 image::new-active-analysis.png[Active analysis]
 
-*Customers* アプリケーションを選択します。次に、右側の *Reports* タブで `Report` をクリックします。
+*Customers* アプリケーションを選択します。次に、右側の *Details* タブで `Issues` をクリックします。
 
 image::new-active-analysis-report.png[Active analysis]
 
-「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成しています。レポートの生成後、レポート内にて、ストーリーポイントが `0` になったことを確認してください。
-「Customers」サービスでのレポートと比較して、何を直したのかを確認してください。
+「Customers」サービスのプロジェクトで使用したものと同一設定およびカスタムルールでプロジェクトを構成しています。レポートの生成後、レポート内にてissueが無くなったことを確認してください。
 
 ## おめでとうございます!
 
