@@ -19,8 +19,8 @@ For a Refactor (including rewrites or re-architectures),Red Hat helps our custom
 
 This module will walk you through 2 of the phases (_Refactor_, _Deployment_) as follows:
 
-* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/6.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
-* Deploy the modernized applications to OpenShift using link:https://access.redhat.com/documentation/en-us/openshift_container_platform/4.11/html-single/cicd/index#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
+* Refactor the legacy application (*Customers*) to fix the legacy configuration issue in the https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/7.0/html-single/introduction_to_the_migration_toolkit_for_applications/index[Migration Toolkit for Applications (MTA)^] Analysis report
+* Deploy the modernized applications to OpenShift using link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/builds_using_buildconfig/creating-build-inputs#builds-binary-source_creating-build-inputs[OpenShift Binary Build and Deployment^]
 
 == 1.1. Understand the Globex Retail System Architecture
 
@@ -115,7 +115,7 @@ If you see a popup message about allowing copy/paste, *"See text and images copi
 
 == 1.4 Change the Working Project
 
-Make sure to *check out* to the right branch, `patch-postgre` that you'll go through this module today! Run the following `git` command in the VS Code terminal.
+Make sure to *check out* to the right branch, `ocp-4.15` that you'll go through this module today! Run the following `git` command in the VS Code terminal.
 
 [.console-input]
 [source,bash]
