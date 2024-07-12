@@ -110,7 +110,7 @@ image::vscode-terminal.png[vscode-terminal]
 
 [NOTE]
 ====
-コピー&ペーストの許可に関する *"See text andimages copied to the clipboard"* というポップアップメッセージが表示された場合は `Allow` をクリックします。また、ターミナルで `"Use insecure connections?"` というメッセージが表示さた場合は `y` を入力してください。
+コピー&ペーストの許可に関する *"See text and images copied to the clipboard"* というポップアップメッセージが表示された場合は `Allow` をクリックします。また、ターミナルで `"Use insecure connections?"` というメッセージが表示さた場合は `y` を入力してください。
 ====
 
 == 1.4 作業プロジェクトの変更
