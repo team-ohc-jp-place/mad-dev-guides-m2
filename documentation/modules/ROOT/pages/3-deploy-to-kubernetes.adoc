@@ -170,7 +170,7 @@ image::sso_login.png[openshift_login]
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-OpenShift virtualization上の新しいPostgreSQLデータベースのお客様データを取得するため、「Customers」アプリケーションにおける、以下のRESTful APIにアクセスしてください。
+OpenShift上の新しいPostgreSQLデータベースのお客様データを取得できるか確認するため、デプロイしたばかりの「Customers」アプリケーションにおけるRESTful APIにVSCodeからアクセスしてください。
 
 [.console-input]
 [source,bash]
