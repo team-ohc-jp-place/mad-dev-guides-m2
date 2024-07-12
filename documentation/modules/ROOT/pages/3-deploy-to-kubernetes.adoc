@@ -170,7 +170,7 @@ image::sso_login.png[openshift_login]
 
 image::customers-qa-topology.png[customers-qa-topology]
 
-OpenShift上の新しいPostgreSQLデータベースのお客様データを取得できるか確認するため、デプロイしたばかりの「Customers」アプリケーションにおけるRESTful APIにVSCodeからアクセスしてください。
+OpenShift上の新しいPostgreSQLデータベースのお客様データを取得できるか確認するため、デプロイしたばかりの「Customers」アプリケーションにおけるRESTful APIにVSCodeのターミナルからアクセスしてください。
 
 [.console-input]
 [source,bash]
@@ -186,7 +186,7 @@ curl http://customers.customers-qa-%USERID%.svc.cluster.local:8080/customers-tom
 {"id":1,"username":"phlegm_master_19","name":"Guybrush","surname":"Threepwood","address":"1060 West Addison","zipCode":"ME-001","city":"Melee Town","country":"Melee Island"}
 ----
 
-この出力内容から、OpenShift上で動作する最新のアプリケーションが、バックエンドデータベースからお客様データを正常に取得できていることが分かります。
+この出力内容から、OpenShift上で動作する最新のアプリケーションが、バックエンドデータベースに保存された顧客データを正常に取得できていることが分かります。
 
 == まとめ
 
