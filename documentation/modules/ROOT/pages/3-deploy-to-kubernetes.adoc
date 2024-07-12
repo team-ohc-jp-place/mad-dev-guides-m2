@@ -33,8 +33,7 @@ oc new-project customers-qa-%USERID%
 
 == 3.2. ディレクトリ構造の準備
 
-ローカルファイルシステム上にバイナリビルド用のディレクトリおよび `deployments/` サブディレクトリを作成し、作成後、WARアーカイブファイルを `deployments/` ディレクトリにコピーします。
-VS Codeのターミナルで以下のコマンドを実行してください。
+ローカルファイルシステム上にバイナリビルド用のディレクトリおよび `deployments/` サブディレクトリを作成し、作成後、WARアーカイブファイルを `deployments/` ディレクトリにコピーします。VS Codeのターミナルで以下のコマンドを実行してください。
 
 [.console-input]
 [source,bash,subs="+attributes,macros+"]
@@ -158,8 +157,7 @@ oc label deployment/customers app.openshift.io/runtime=rh-tomcat
 
 `おめでとうございます` 。OpenShiftクラスタに「New Customers」アプリケーションのデプロイに成功しました。
 
-* アクセス
-このアプリケーションが「customers-qa-%USERID%」プロジェクトで実行されている場合は、 link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] にアクセスしてください。
+* アプリケーションを「customers-qa-%USERID%」プロジェクトで実行しているので link:https://console-openshift-console.%SUBDOMAIN%/topology/ns/customers-qa-%USERID%?view=graph[Topology view^] にアクセスしてください。
 
 OpenShift クラスタにログインしたことがない場合は、次の認証情報を使用してください。OpenShiftはすでに https://access.redhat.com/products/red-hat-single-sign-on/[Red Hat Single Sign On^] と統合されています。
 
