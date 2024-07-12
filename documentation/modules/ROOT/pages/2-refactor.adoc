@@ -13,7 +13,7 @@
 
 image::static-ip-issue.png[static-ip-issue]
 
-この問題をコードレベルで確認します。VS Codeサーバーのウィンドウで、 `customers-tomcat-legacy` プロジェクトを開き、 *src/main/java/io/konveyor/demo/ordermanagement/config* ディレクトリにある `PersistenceConfig.java` ファイルを確認してください。
+この問題をコードレベルで確認します。 link:https://codeserver-codeserver-%USERID%.%SUBDOMAIN%[VS Code server instance^] のウィンドウで、 `customers-tomcat-legacy` プロジェクトを開き、 *src/main/java/io/konveyor/demo/ordermanagement/config* ディレクトリにある `PersistenceConfig.java` ファイルを確認してください。
 
 image::persistence-class.png[persistence-class]
 
